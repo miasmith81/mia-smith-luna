@@ -12,10 +12,15 @@
 </head>
 
 <body>
-    <nav>
+    <nav class="navbar">
         <ul style="list-style:none; padding:0; margin:0; display:flex; gap:1em; background:#f4f4f4; border-radius:6px;">
             <li><a href="index.html">Home</a></li>
             <li><a href="html/image.html">Images</a></li>
+            <li><a href="#About"></a>About</li>
+            <li><a href="#Skills"></a>Skills</li>
+            <li><a href="#Projects"></a>Projects</li>
+            <li><a href="#Experience"></a>Experience</li>
+            <li><a href="#Connect"></a>Connect</li>
         </ul>
     </nav>
     <h1>Welcome to Mia Smith's Portfolio</h1>
@@ -28,8 +33,8 @@
     </section>
     <!-- End of Section 'About' -->
 
-    <section id="Experience">
-        <h2>Experience</h2>
+    <section id="Skills">
+        <h2>Skills</h2>
         <h3>Entry Level Only</h3>
         <ul>
             <li>HTML</li>
@@ -42,16 +47,55 @@
             <li>MERN Stack Web Development</li>
         </ul>
     </section>
+    <!-- End of Section 'Skills' -->
+
+    <section id="Projects">
+        <h2>Projects</h2>
+        <ul>
+            <li></li>
+        </ul>
+    </section>
+    <!-- End of Section 'Projects' -->
+
+    <section id="Experience">
+        <h2>Experience</h2>
+        <h3>Entry Level Only</h3>
+        <ul class="experience-list">
+            <li class="experience-item">
+                <div class="exp-row">
+                    <span class="exp-title">The Last Mile</span>
+                    <span class="exp-date">2021 - 2023</span>
+                </div>
+                <div class="exp-desc">Completed a rigorous web development program focused on MERN stack and real-world projects.</div>
+            </li>
+            <li class="experience-item">
+                <div class="exp-row">
+                    <span class="exp-title">Code The Dream</span>
+                    <span class="exp-date">2025 - 2026</span>
+                </div>
+                <div class="exp-desc">Collaborated on team-based software projects, learning agile practices and modern JavaScript frameworks.</div>
+            </li>
+            <li class="experience-item">
+                <div class="exp-row">
+                    <span class="exp-title">Freelance Project @ StrayDog Syndications LLC</span>
+                    <span class="exp-date">2025</span>
+                </div>
+                <div class="exp-desc">Developed a custom business website for a client, handling both design and deployment.</div>
+            </li>
+        </ul>
+    </section>
     <!-- End of Section 'Experience' -->
 
     <section id="Connect">
         <h2>Connect</h2>
-        <ul>
+        <ul class="connect-list">
             <li>
                 <a href="https://github.com/miasmith81/mia-smith-luna" target="_blank" rel="noopener noreferrer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle; margin-right:6px;"><path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.578.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/></svg>
                     GitHub &ndash; miasmith81/mia-smith-luna
                 </a>
+            </li>
+            <li>
                 <a href="https://wa.me/4064318114" target="_blank" rel="noopener noreferrer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="currentColor" style="vertical-align:middle; margin-right:6px;"><path d="M16.003 3.2c-7.067 0-12.8 5.733-12.8 12.8 0 2.262.6 4.467 1.733 6.4l-2.067 6.067c-.133.4 0 .8.267 1.067.267.267.667.4 1.067.267l6.067-2.067c1.867 1.067 4.133 1.733 6.4 1.733 7.067 0 12.8-5.733 12.8-12.8s-5.733-12.8-12.8-12.8zm0 23.467c-2.067 0-4.133-.533-5.867-1.6-.267-.133-.533-.133-.8-.067l-4.8 1.6 1.6-4.8c.067-.267.067-.533-.067-.8-1.067-1.733-1.6-3.8-1.6-5.867 0-6.133 4.933-11.067 11.067-11.067s11.067 4.933 11.067 11.067-4.933 11.067-11.067 11.067zm6.267-8.267c-.333-.167-1.933-.933-2.233-1.033-.3-.1-.517-.167-.733.167-.217.333-.833 1.033-1.017 1.25-.183.217-.367.25-.7.083-.333-.167-1.4-.517-2.667-1.65-.983-.875-1.65-1.95-1.85-2.283-.183-.317-.02-.483.147-.65.15-.15.333-.383.5-.567.167-.183.217-.317.333-.533.117-.217.05-.4-.017-.567-.067-.167-.733-1.767-1-2.417-.267-.65-.533-.55-.733-.55-.183-.017-.4-.017-.617-.017-.217 0-.567.083-.867.4-.3.317-1.133 1.1-1.133 2.683 0 1.583 1.167 3.117 1.333 3.333.167.217 2.3 3.517 5.567 4.783.783.317 1.392.5 1.867.633.783.25 1.5.217 2.067.133.633-.1 1.933-.783 2.2-1.542.267-.758.267-1.408.183-1.542-.083-.133-.3-.217-.633-.367z"/></svg>
                     WhatsApp
