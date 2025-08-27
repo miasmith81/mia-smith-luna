@@ -2,13 +2,30 @@
    CSS Variables
    =================== */
 :root {
+    /* Colors */
     --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
     --text-dark: #1f2937;
     --text-light: #6b7280;
+    
+    /* Backgrounds */
     --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     --card-bg: rgba(255, 255, 255, 0.9);
+    
+    /* Effects */
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
+    --shadow-hover: 0 15px 40px rgba(37, 99, 235, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Layout */
+    --section-spacing: clamp(3rem, 8vw, 6rem);
+    --container-padding: clamp(1.5rem, 4vw, 4rem);
+    --border-radius: 15px;
+    
+    /* Typography */
+    --font-small: clamp(0.875rem, 2vw, 1rem);
+    --font-base: clamp(1rem, 2.5vw, 1.125rem);
+    --font-large: clamp(1.125rem, 3vw, 1.25rem);
 }
 
 /* ===================
@@ -22,12 +39,32 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px; /* Account for fixed header */
+}
+
 body {
     font-family: 'Segoe UI', system-ui, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
     background: var(--bg-gradient);
     min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .navbar {
@@ -91,21 +128,40 @@ body {
    Section Styles
    =================== */
 section {
-    padding: 60px 0;
+    padding: 80px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section > .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 3rem;
+    max-width: 800px;
+}
+
+.section-header .subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
 }
 
 h1 {
     text-align: center;
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-weight: 700;
-    font-size: 2rem;
+    font-size: clamp(2rem, 5vw, 3.5rem);
     color: var(--text-dark);
     margin-bottom: 1rem;
+    line-height: 1.2;
 }
 
 h2 {
@@ -368,6 +424,17 @@ h3 {
    Media Queries
    =================== */
 
+/* Small devices (576px and up) */
+@media screen and (min-width: 576px) {
+    .container {
+        padding: 0 2rem;
+    }
+
+    .photo-section {
+        padding: 3rem;
+    }
+}
+
 /* Tablet (768px and up) */
 @media screen and (min-width: 768px) {
     .nav-links {
@@ -379,45 +446,68 @@ h3 {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 2rem;
+        justify-content: center;
     }
     
     .experience-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
-    h1 {
-        font-size: 2.5rem;
+
+    .photo-section {
+        flex-direction: row;
+        text-align: left;
+        padding: 4rem;
+        gap: 4rem;
+    }
+
+    .profile-img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .about-content {
+        text-align: left;
     }
     
     h2 {
-        font-size: 2.2rem;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
     }
     
     h3 {
-        font-size: 1.8rem;
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 /* Desktop (1024px and up) */
 @media screen and (min-width: 1024px) {
     .container {
-        padding: 0 40px;
-    }
-    
-    h1 {
-        font-size: 3rem;
-    }
-    
-    h2 {
-        font-size: 2.5rem;
+        padding: 0 3rem;
     }
     
     .nav-container {
-        padding: 0 40px;
+        padding: 0 3rem;
     }
     
     .experience-grid {
         gap: 3rem;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .photo-section {
+        padding: 5rem;
+    }
+
+    .profile-img {
+        width: 300px;
+        height: 300px;
     }
 }
 
@@ -425,14 +515,16 @@ h3 {
 @media screen and (min-width: 1440px) {
     .container {
         max-width: 1400px;
+        padding: 0 4rem;
     }
     
+    .photo-section {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .skills-grid,
     .experience-grid {
-        grid-template-columns: repeat(3, 1fr);
-        max-width: 1200px;
-    }
-    
-    h1 {
-        font-size: 3.5rem;
+        gap: 4rem;
     }
 }
