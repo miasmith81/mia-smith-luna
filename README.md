@@ -5,6 +5,14 @@ A modern, responsive web development portfolio showcasing my journey, skills, an
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://miasmith81.github.io/mia-smith-luna/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<div align="center">
+  <img src="assets/main.png" alt="Portfolio Screenshot" width="100%" style="max-width: 1200px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</div>
+
+## ✨ Portfolio Preview
+
+The screenshot above showcases the modern, clean design of my portfolio website. It features a responsive layout, smooth animations, and a professional color scheme that creates an engaging user experience.
+
 ## Project Status
 [![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)](https://github.com/miasmith81/mia-smith-luna)
 [![Last Commit](https://img.shields.io/github/last-commit/miasmith81/mia-smith-luna?style=for-the-badge)](https://github.com/miasmith81/mia-smith-luna/commits/main)
