@@ -239,7 +239,7 @@ main {
    Section Styles
    =================== */
 section {
-    padding: 80px 0;
+    padding: clamp(3rem, 10vh, 5rem) 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -251,12 +251,14 @@ section > .container {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: clamp(2rem, 5vh, 3rem);
 }
 
 .section-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: clamp(2rem, 5vh, 3rem);
     max-width: 800px;
+    position: relative;
 }
 
 .section-header .subtitle {
@@ -332,12 +334,15 @@ p {
    Hero Section
    =================== */
 .hero {
-    min-height: calc(100vh - 70px);
+    min-height: 60vh;
+    padding: clamp(4rem, 15vh, 8rem) 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     background: var(--bg-gradient);
     position: relative;
     overflow: hidden;
+    margin-top: 60px; /* Account for fixed navbar */
 }
 
 .hero::before {
@@ -350,13 +355,20 @@ p {
     background: linear-gradient(45deg, rgba(37, 99, 235, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
 }
 
+.hero .container {
+    position: relative;
+    z-index: 1;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
 .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: var(--font-large);
     color: var(--text-light);
     margin-top: 1rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+    opacity: 0.9;
 }
 
 /* ===================
