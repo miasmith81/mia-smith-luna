@@ -1,0 +1,56 @@
+/* Theme Toggle */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+    transition: transform 0.3s ease;
+}
+
+[data-theme="dark"] .sun-icon {
+    display: none;
+}
+
+[data-theme="light"] .moon-icon {
+    display: none;
+}
+
+/* Dark Theme Adjustments */
+[data-theme="dark"] {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .navbar {
+    background: var(--nav-bg);
+}
+
+[data-theme="dark"] .glass-container {
+    background: var(--card-bg);
+}
+
+[data-theme="dark"] .nav-links a {
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .nav-links a:hover {
+    color: var(--accent-color);
+}
+
+[data-theme="dark"] .section {
+    background: var(--bg-secondary);
+}

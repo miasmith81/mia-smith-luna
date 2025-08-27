@@ -2,6 +2,27 @@
    CSS Variables
    =================== */
 :root {
+    /* Theme Colors */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --accent-color: #2563eb;
+    --border-color: rgba(255, 255, 255, 0.18);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --nav-bg: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --accent-color: #60a5fa;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --nav-bg: rgba(15, 23, 42, 0.15);
+}
     /* Colors */
     --primary-color: #2563eb;
     --primary-dark: #1d4ed8;
