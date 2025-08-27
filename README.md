@@ -5,6 +5,42 @@ A modern, responsive web development portfolio showcasing my journey, skills, an
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen.svg)](https://miasmith81.github.io/mia-smith-luna/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## Project Status
+[![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)](https://github.com/miasmith81/mia-smith-luna)
+[![Last Commit](https://img.shields.io/github/last-commit/miasmith81/mia-smith-luna?style=for-the-badge)](https://github.com/miasmith81/mia-smith-luna/commits/main)
+[![Issues](https://img.shields.io/github/issues/miasmith81/mia-smith-luna?style=for-the-badge)](https://github.com/miasmith81/mia-smith-luna/issues)
+[![Website Status](https://img.shields.io/website?style=for-the-badge&url=https%3A%2F%2Fmiasmith81.github.io%2Fmia-smith-luna%2F)](https://miasmith81.github.io/mia-smith-luna/)
+
+## Technology Stack
+
+### Frontend
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+
+### Backend
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+
+### Development Tools
+[![VS Code](https://img.shields.io/badge/VS_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white)](https://code.visualstudio.com/)
+[![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)](https://git-scm.com/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/)
+
+### Design Tools
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
+[![Adobe](https://img.shields.io/badge/Adobe-FF0000?style=for-the-badge&logo=adobe&logoColor=white)](https://www.adobe.com/)
+
+### AI & Automation
+[![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/features/copilot)
+[![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+
+### Learning Platforms
+[![MDN Web Docs](https://img.shields.io/badge/MDN_Web_Docs-black?style=for-the-badge&logo=mdnwebdocs&logoColor=white)](https://developer.mozilla.org/)
+[![FreeCodeCamp](https://img.shields.io/badge/freecodecamp-27273D?style=for-the-badge&logo=freecodecamp&logoColor=white)](https://www.freecodecamp.org/)
+
 ## Overview
 
 This portfolio website is built with modern web technologies and best practices, featuring a responsive design, glassmorphism effects, and smooth animations. It showcases my skills, experience, and projects while providing an easy way for potential collaborators to connect with me.
