@@ -679,8 +679,6 @@ p {
 .experience-content::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.3);
 }
-    width: 8px;
-}
 
 .experience-item::-webkit-scrollbar-track {
     background: rgba(241, 241, 241, 0.1);
