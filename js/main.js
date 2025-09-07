@@ -21,6 +21,7 @@ const CONFIG = {
         messageSender: 'message-sender',
         messageText: 'message-text',
         removeBtn: 'remove-btn',
+        editBtn: 'edit-btn',
         thankYouMessage: 'thank-you-message',
         glassContainer: 'glass-container'
     },
@@ -312,7 +313,11 @@ class MessageFormHandler {
         `;
 
         const removeButton = this.createRemoveButton();
-        messageItem.appendChild(removeButton);
+        const editButton = this.createEditButton();
+        
+        const messageContent = messageItem.querySelector(`.${CONFIG.classes.messageContent}`);
+        messageContent.appendChild(editButton);
+        messageContent.appendChild(removeButton);
 
         return messageItem;
     }
@@ -335,6 +340,36 @@ class MessageFormHandler {
     }
 
     /**
+     * Create edit button with proper attributes and events
+     * @private
+     * @returns {HTMLButtonElement} The created edit button
+     */
+    createEditButton() {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = CONFIG.classes.editBtn;
+        button.textContent = 'Edit';
+        button.setAttribute('aria-label', 'Edit message');
+        
+        button.addEventListener('click', () => this.editMessage(button));
+        
+        return button;
+    }
+
+    /**
+     * Remove message and update visibility    createEditButton() {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = CONFIG.classes.editBtn;
+        button.textContent = 'Edit';
+        button.setAttribute('aria-label', 'Edit message');
+
+        button.addEventListener('click', () => this.editMessage(button));
+
+        return button;
+    }
+
+    /**
      * Remove message and update visibility
      * @param {HTMLButtonElement} button - The remove button
      */
@@ -343,6 +378,25 @@ class MessageFormHandler {
         if (messageItem) {
             messageItem.remove();
             this.checkMessageListVisibility();
+        }
+    }
+
+    /**
+     * Edit message content
+     * @param {HTMLButtonElement} button - The edit button
+     */
+    editMessage(button) {
+        const messageItem = button.closest(`.${CONFIG.classes.messageItem}`);
+        if (messageItem) {
+            const messageTextElement = messageItem.querySelector(`.${CONFIG.classes.messageText}`);
+            if (messageTextElement) {
+                const currentText = messageTextElement.textContent.trim();
+                const newText = prompt('Edit your message:', currentText);
+                
+                if (newText !== null && newText.trim() !== '' && newText.trim() !== currentText) {
+                    messageTextElement.textContent = Utils.sanitizeHTML(newText.trim());
+                }
+            }
         }
     }
 

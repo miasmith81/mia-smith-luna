@@ -851,6 +851,22 @@ p {
     background: #dc2626;
 }
 
+.edit-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 0.5rem;
+    /* position: fixed; */
+}
+
+.edit-btn:hover {
+    background: #2563eb;
+}
+
 .form-group {
     margin-bottom: 1.5rem;
 }
