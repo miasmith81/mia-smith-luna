@@ -24,6 +24,7 @@
                 <li><a href="#skills" data-text="Skills">Skills</a></li>
                 <li><a href="#projects" data-text="Projects">Projects</a></li>
                 <li><a href="#experience" data-text="Experience">Experience</a></li>
+                <li><a href="#leave-message" data-text="Leave A Message">Leave A Message</a></li>
                 <li><a href="#connect" data-text="Connect">Connect</a></li>
             </ul>
         </div>
@@ -183,8 +184,47 @@
                 </div>
             </div>
         </section>
-        </main>
 
-        <script src="/js/main.js">JavaScript</script>
+        <section id="leave-message" class="section glass-container">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Leave a Message</h2>
+                </div>
+                <form name="leave_message" class="message-form">
+                    <div class="form-group">
+                        <label for="usersName">Name:</label>
+                        <input type="text" id="usersName" name="usersName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usersEmail">Email:</label>
+                        <input type="email" id="usersEmail" name="usersEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="usersMessage">Message (optional):</label>
+                        <textarea id="usersMessage" name="usersMessage"></textarea>
+                    </div>
+                    <div class="submit-container">
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <section id="messages" class="section glass-container">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Messages</h2>
+                    <p class="subtitle">Messages from Visitors</p>
+                </div>
+                <ul id="message-list" class="message-list">
+                    <!-- Messages will be added here dynamically -->
+                </ul>
+            </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="/js/main.js">JavaScript</script>
 </body>
 </html>
