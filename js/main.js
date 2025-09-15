@@ -64,58 +64,57 @@ function initializeMessageForm() {
             const existingThankYou = document.querySelectorAll(`.${PORTFOLIO_CONFIG.classes.thankYouMessage}`);
             existingThankYou.forEach(msg => msg.remove());
             
-            // Check if user provided a message
-            if (userMessage) {
-                // User provided a message - add to list and show section
-                const newMessage = document.createElement('li');
-                newMessage.innerHTML = `
-                    <div class="${PORTFOLIO_CONFIG.classes.messageContent}">
-                        <a href="mailto:${userEmail}">${userName}</a>
-                        <span class="${PORTFOLIO_CONFIG.classes.messageText}">${userMessage}</span>
-                    </div>
-                `;
-                
-                // Create edit button
-                const editButton = document.createElement('button');
-                editButton.innerText = 'edit';
-                editButton.type = 'button';
-                editButton.className = PORTFOLIO_CONFIG.classes.editBtn;
-                editButton.addEventListener('click', function() {
-                    const messageSpan = this.closest('li').querySelector(`.${PORTFOLIO_CONFIG.classes.messageText}`);
-                    const newText = prompt('Edit your message:', messageSpan.textContent);
-                    if (newText !== null && newText.trim() !== '') {
-                        messageSpan.textContent = newText.trim();
-                    }
-                });
-                
-                // Create remove button
-                const removeButton = document.createElement('button');
-                removeButton.innerText = 'remove';
-                removeButton.type = 'button';
-                removeButton.className = PORTFOLIO_CONFIG.classes.removeBtn;
-                removeButton.addEventListener('click', function() {
-                    this.closest('li').remove();
-                    checkMessageList(section, list);
-                });
-                
-                // Add buttons to message
-                const messageContent = newMessage.querySelector(`.${PORTFOLIO_CONFIG.classes.messageContent}`);
-                messageContent.appendChild(editButton);
-                messageContent.appendChild(removeButton);
-                
-                // Add message to list
-                list.appendChild(newMessage);
-                
-                // Show messages section
-                section.style.display = 'block';
-                
-                // Show thank you message with message
-                showThankYouMessage(PORTFOLIO_CONFIG.messages.withMessage(userName), form);
-            } else {
-                // No message provided - just show thank you
-                showThankYouMessage(PORTFOLIO_CONFIG.messages.withoutMessage(userName), form);
-                // Keep messages section hidden
+            // Validate message field
+            if (!userMessage) {
+                alert('Please enter a message');
+                return;
             }
+
+            // Create message element
+            const newMessage = document.createElement('li');
+            newMessage.innerHTML = `
+                <div class="${PORTFOLIO_CONFIG.classes.messageContent}">
+                    <a href="mailto:${userEmail}">${userName}</a>
+                    <span class="${PORTFOLIO_CONFIG.classes.messageText}">${userMessage}</span>
+                </div>
+            `;
+            
+            // Create edit button
+            const editButton = document.createElement('button');
+            editButton.innerText = 'edit';
+            editButton.type = 'button';
+            editButton.className = PORTFOLIO_CONFIG.classes.editBtn;
+            editButton.addEventListener('click', function() {
+                const messageSpan = this.closest('li').querySelector(`.${PORTFOLIO_CONFIG.classes.messageText}`);
+                const newText = prompt('Edit your message:', messageSpan.textContent);
+                if (newText !== null && newText.trim() !== '') {
+                    messageSpan.textContent = newText.trim();
+                }
+            });
+            
+            // Create remove button
+            const removeButton = document.createElement('button');
+            removeButton.innerText = 'remove';
+            removeButton.type = 'button';
+            removeButton.className = PORTFOLIO_CONFIG.classes.removeBtn;
+            removeButton.addEventListener('click', function() {
+                this.closest('li').remove();
+                checkMessageList(section, list);
+            });
+            
+            // Add buttons to message
+            const messageContent = newMessage.querySelector(`.${PORTFOLIO_CONFIG.classes.messageContent}`);
+            messageContent.appendChild(editButton);
+            messageContent.appendChild(removeButton);
+            
+            // Add message to list
+            list.appendChild(newMessage);
+            
+            // Show messages section
+            section.style.display = 'block';
+            
+            // Show thank you message
+            showThankYouMessage(PORTFOLIO_CONFIG.messages.withMessage(userName), form);
             
             // Reset form
             event.target.reset();
