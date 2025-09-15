@@ -1,196 +1,45 @@
 /**
  * Portfolio Website - Main JavaScript
- * Complete implementation with all requirements
+ * Refactored implementation with best practices
+ * 
+ * Features:
+ * - Message form handling with conditional thank you messages
+ * - Dynamic message list with edit/remove functionality
+ * - Skills section initialization
+ * - Footer generation
  */
+
+'use strict';
 
 // ==========================================
-// CORE MESSAGE FORM FUNCTIONALITY
+// CONFIGURATION
 // ==========================================
 
-// Get DOM elements
-const messageForm = document.querySelector('form[name="leave_message"]');
-const messageSection = document.getElementById('messages');
-const messageList = document.getElementById('message-list');
-
-// Initially hide the messages section
-if (messageSection) {
-    messageSection.style.display = 'none';
-}
-
-// Main form submission handler
-if (messageForm) {
-    messageForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        // Get form values
-        const userName = event.target.usersName.value.trim();
-        const userEmail = event.target.usersEmail.value.trim();
-        const userMessage = event.target.usersMessage.value.trim();
-        
-        // Log values as required by assignment
-        console.log(userName, userEmail, userMessage);
-        
-        // Validate required fields
-        if (!userName) {
-            alert('Please enter your name');
-            return;
+const CONFIG = {
+    selectors: {
+        messageForm: 'form[name="leave_message"]',
+        messageSection: '#messages',
+        messageList: '#message-list',
+        skillsSection: '#skills',
+        formFields: {
+            name: 'usersName',
+            email: 'usersEmail',
+            message: 'usersMessage'
         }
-        
-        if (!userEmail) {
-            alert('Please enter your email');
-            return;
+    },
+    messages: {
+        withMessage: (name) => `Thank you ${name} for your message and visiting my portfolio page. I will get back to you as soon as possible and have a wonderful day.`,
+        withoutMessage: (name) => `Thank you ${name} for visiting my portfolio page and have a wonderful day.`,
+        validation: {
+            name: 'Please enter your name',
+            email: 'Please enter your email',
+            invalidEmail: 'Please enter a valid email address'
         }
-        
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(userEmail)) {
-            alert('Please enter a valid email address');
-            return;
-        }
-        
-        // Remove any existing thank you messages before creating new one
-        const existingThankYouMessages = document.querySelectorAll('.thank-you-message');
-        existingThankYouMessages.forEach(msg => msg.remove());
-        
-        // Process submission based on whether message was provided
-        if (userMessage && userMessage.length > 0) {
-            // User provided a message - create list item and show section
-            createMessageListItem(userName, userEmail, userMessage);
-            
-            // Show the messages section
-            if (messageSection) {
-                messageSection.style.display = 'block';
-            }
-            
-            // Show thank you message for submission WITH message
-            showThankYouMessage(
-                `Thank you ${userName} for your message and visiting my portfolio page. I will get back to you as soon as possible and have a wonderful day.`
-            );
-        } else {
-            // No message provided - just show thank you, don't create list item
-            // Messages section stays hidden
-            
-            // Show thank you message for submission WITHOUT message
-            showThankYouMessage(
-                `Thank you ${userName} for visiting my portfolio page and have a wonderful day.`
-            );
-        }
-        
-        // Reset the form
-        event.target.reset();
-    });
-}
-
-/**
- * Create a message list item with edit and remove buttons
- */
-function createMessageListItem(name, email, message) {
-    if (!messageList) return;
-    
-    // Create list item
-    const li = document.createElement('li');
-    
-    // Create message content container
-    const messageContent = document.createElement('div');
-    messageContent.className = 'message-content';
-    
-    // Create email link
-    const emailLink = document.createElement('a');
-    emailLink.href = `mailto:${email}`;
-    emailLink.textContent = name;
-    
-    // Create message text span
-    const messageText = document.createElement('span');
-    messageText.className = 'message-text';
-    messageText.textContent = message;
-    
-    // Create edit button
-    const editButton = document.createElement('button');
-    editButton.textContent = 'edit';
-    editButton.type = 'button';
-    editButton.className = 'edit-btn';
-    editButton.addEventListener('click', function() {
-        const currentMessage = messageText.textContent;
-        const newMessage = prompt('Edit your message:', currentMessage);
-        if (newMessage !== null && newMessage.trim() !== '') {
-            messageText.textContent = newMessage.trim();
-        }
-    });
-    
-    // Create remove button
-    const removeButton = document.createElement('button');
-    removeButton.textContent = 'remove';
-    removeButton.type = 'button';
-    removeButton.className = 'remove-btn';
-    removeButton.addEventListener('click', function() {
-        li.remove();
-        // Check if message list is empty and hide section if it is
-        checkMessageListVisibility();
-    });
-    
-    // Assemble the message content
-    messageContent.appendChild(emailLink);
-    messageContent.appendChild(messageText);
-    messageContent.appendChild(editButton);
-    messageContent.appendChild(removeButton);
-    
-    // Add content to list item
-    li.appendChild(messageContent);
-    
-    // Add to message list
-    messageList.appendChild(li);
-}
-
-/**
- * Show thank you message that auto-removes after 5 seconds
- */
-function showThankYouMessage(messageText) {
-    // Create thank you message div
-    const thankYouDiv = document.createElement('div');
-    thankYouDiv.className = 'thank-you-message';
-    thankYouDiv.setAttribute('role', 'alert');
-    thankYouDiv.setAttribute('aria-live', 'polite');
-    
-    // Create paragraph with message
-    const paragraph = document.createElement('p');
-    paragraph.textContent = messageText;
-    thankYouDiv.appendChild(paragraph);
-    
-    // Insert after the form
-    if (messageForm && messageForm.parentNode) {
-        messageForm.parentNode.insertBefore(thankYouDiv, messageForm.nextSibling);
-    }
-    
-    // Remove after 5 seconds
-    setTimeout(function() {
-        if (thankYouDiv.parentNode) {
-            thankYouDiv.remove();
-        }
-    }, 5000);
-}
-
-/**
- * Check if messages section should be visible
- */
-function checkMessageListVisibility() {
-    if (messageSection && messageList) {
-        if (messageList.children.length > 0) {
-            messageSection.style.display = 'block';
-        } else {
-            messageSection.style.display = 'none';
-        }
-    }
-}
-
-// ==========================================
-// SKILLS SECTION
-// ==========================================
-
-/**
- * Initialize skills section with predefined skills
- */
-function initializeSkills() {
-    const skills = [
+    },
+    timing: {
+        thankYouDuration: 5000
+    },
+    skills: [
         "HTML5 & Semantic Markup",
         "CSS3 & Modern Layouts",
         "JavaScript (ES6+)",
@@ -203,76 +52,430 @@ function initializeSkills() {
         "Responsive Design",
         "Web Accessibility",
         "MERN Stack"
-    ];
+    ]
+};
 
-    const skillsSection = document.querySelector('#skills');
-    if (!skillsSection) return;
+// ==========================================
+// UTILITY FUNCTIONS
+// ==========================================
 
-    const skillsList = skillsSection.querySelector('ul');
-    if (!skillsList) return;
+/**
+ * Validate email format
+ * @param {string} email - Email address to validate
+ * @returns {boolean} - True if valid email format
+ */
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
 
-    // Clear existing content
-    skillsList.innerHTML = '';
+/**
+ * Sanitize user input to prevent XSS
+ * @param {string} str - String to sanitize
+ * @returns {string} - Sanitized string
+ */
+function sanitizeInput(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+// ==========================================
+// MESSAGE FORM FUNCTIONALITY
+// ==========================================
+
+class MessageFormHandler {
+    constructor() {
+        this.form = document.querySelector(CONFIG.selectors.messageForm);
+        this.messageSection = document.querySelector(CONFIG.selectors.messageSection);
+        this.messageList = document.querySelector(CONFIG.selectors.messageList);
+        
+        this.init();
+    }
     
-    // Add each skill as a list item
-    skills.forEach(function(skill) {
+    /**
+     * Initialize the message form handler
+     */
+    init() {
+        // Hide messages section initially
+        this.hideMessagesSection();
+        
+        // Set up form submission handler
+        if (this.form) {
+            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+        }
+    }
+    
+    /**
+     * Handle form submission
+     * @param {Event} event - Submit event
+     */
+    handleSubmit(event) {
+        event.preventDefault();
+        
+        // Extract and trim form values
+        const formData = this.extractFormData(event.target);
+        
+        // Log values as required
+        console.log(formData.name, formData.email, formData.message);
+        
+        // Validate form
+        if (!this.validateForm(formData)) {
+            return;
+        }
+        
+        // Clear any existing thank you messages
+        this.clearThankYouMessages();
+        
+        // Process submission based on message presence
+        if (formData.message) {
+            // User provided a message
+            this.handleSubmissionWithMessage(formData);
+        } else {
+            // No message provided
+            this.handleSubmissionWithoutMessage(formData);
+        }
+        
+        // Reset the form
+        this.form.reset();
+    }
+    
+    /**
+     * Extract form data
+     * @param {HTMLFormElement} form - Form element
+     * @returns {Object} - Form data
+     */
+    extractFormData(form) {
+        return {
+            name: form[CONFIG.selectors.formFields.name].value.trim(),
+            email: form[CONFIG.selectors.formFields.email].value.trim(),
+            message: form[CONFIG.selectors.formFields.message].value.trim()
+        };
+    }
+    
+    /**
+     * Validate form data
+     * @param {Object} formData - Form data to validate
+     * @returns {boolean} - True if valid
+     */
+    validateForm(formData) {
+        // Validate name
+        if (!formData.name) {
+            alert(CONFIG.messages.validation.name);
+            return false;
+        }
+        
+        // Validate email presence
+        if (!formData.email) {
+            alert(CONFIG.messages.validation.email);
+            return false;
+        }
+        
+        // Validate email format
+        if (!isValidEmail(formData.email)) {
+            alert(CONFIG.messages.validation.invalidEmail);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Handle submission when message is provided
+     * @param {Object} formData - Form data
+     */
+    handleSubmissionWithMessage(formData) {
+        // Create message list item
+        this.createMessageListItem(formData);
+        
+        // Show messages section
+        this.showMessagesSection();
+        
+        // Show appropriate thank you message
+        this.showThankYouMessage(CONFIG.messages.withMessage(formData.name));
+    }
+    
+    /**
+     * Handle submission when no message is provided
+     * @param {Object} formData - Form data
+     */
+    handleSubmissionWithoutMessage(formData) {
+        // Don't create list item or show messages section
+        // Just show thank you message
+        this.showThankYouMessage(CONFIG.messages.withoutMessage(formData.name));
+    }
+    
+    /**
+     * Create a message list item with edit and remove functionality
+     * @param {Object} data - Message data
+     */
+    createMessageListItem(data) {
+        if (!this.messageList) return;
+        
+        // Create list item
         const li = document.createElement('li');
-        li.textContent = skill;
-        skillsList.appendChild(li);
-    });
+        li.className = 'message-item';
+        
+        // Create message content container
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        // Create email link
+        const emailLink = document.createElement('a');
+        emailLink.href = `mailto:${sanitizeInput(data.email)}`;
+        emailLink.textContent = sanitizeInput(data.name);
+        emailLink.className = 'message-sender';
+        
+        // Create message text
+        const messageText = document.createElement('span');
+        messageText.className = 'message-text';
+        messageText.textContent = sanitizeInput(data.message);
+        
+        // Create button container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'message-buttons';
+        
+        // Create edit button
+        const editButton = this.createEditButton(messageText);
+        
+        // Create remove button
+        const removeButton = this.createRemoveButton(li);
+        
+        // Assemble the components
+        buttonContainer.appendChild(editButton);
+        buttonContainer.appendChild(removeButton);
+        
+        messageContent.appendChild(emailLink);
+        messageContent.appendChild(messageText);
+        messageContent.appendChild(buttonContainer);
+        
+        li.appendChild(messageContent);
+        
+        // Add to message list
+        this.messageList.appendChild(li);
+    }
+    
+    /**
+     * Create edit button
+     * @param {HTMLElement} messageText - Message text element to edit
+     * @returns {HTMLButtonElement} - Edit button
+     */
+    createEditButton(messageText) {
+        const button = document.createElement('button');
+        button.textContent = 'Edit';
+        button.type = 'button';
+        button.className = 'edit-btn';
+        button.setAttribute('aria-label', 'Edit message');
+        
+        button.addEventListener('click', () => {
+            const currentMessage = messageText.textContent;
+            const newMessage = prompt('Edit your message:', currentMessage);
+            
+            if (newMessage !== null && newMessage.trim() !== '') {
+                messageText.textContent = sanitizeInput(newMessage.trim());
+            }
+        });
+        
+        return button;
+    }
+    
+    /**
+     * Create remove button
+     * @param {HTMLElement} listItem - List item to remove
+     * @returns {HTMLButtonElement} - Remove button
+     */
+    createRemoveButton(listItem) {
+        const button = document.createElement('button');
+        button.textContent = 'Remove';
+        button.type = 'button';
+        button.className = 'remove-btn';
+        button.setAttribute('aria-label', 'Remove message');
+        
+        button.addEventListener('click', () => {
+            listItem.remove();
+            this.checkMessageListVisibility();
+        });
+        
+        return button;
+    }
+    
+    /**
+     * Show thank you message
+     * @param {string} messageText - Thank you message text
+     */
+    showThankYouMessage(messageText) {
+        // Create thank you message container
+        const thankYouDiv = document.createElement('div');
+        thankYouDiv.className = 'thank-you-message';
+        thankYouDiv.setAttribute('role', 'alert');
+        thankYouDiv.setAttribute('aria-live', 'polite');
+        
+        // Create paragraph with message
+        const paragraph = document.createElement('p');
+        paragraph.textContent = messageText;
+        thankYouDiv.appendChild(paragraph);
+        
+        // Insert after the form
+        if (this.form && this.form.parentNode) {
+            this.form.parentNode.insertBefore(thankYouDiv, this.form.nextSibling);
+        }
+        
+        // Auto-remove after specified duration
+        setTimeout(() => {
+            if (thankYouDiv.parentNode) {
+                thankYouDiv.remove();
+            }
+        }, CONFIG.timing.thankYouDuration);
+    }
+    
+    /**
+     * Clear existing thank you messages
+     */
+    clearThankYouMessages() {
+        const existingMessages = document.querySelectorAll('.thank-you-message');
+        existingMessages.forEach(msg => msg.remove());
+    }
+    
+    /**
+     * Show messages section
+     */
+    showMessagesSection() {
+        if (this.messageSection) {
+            this.messageSection.style.display = 'block';
+        }
+    }
+    
+    /**
+     * Hide messages section
+     */
+    hideMessagesSection() {
+        if (this.messageSection) {
+            this.messageSection.style.display = 'none';
+        }
+    }
+    
+    /**
+     * Check if messages section should be visible
+     */
+    checkMessageListVisibility() {
+        if (this.messageSection && this.messageList) {
+            if (this.messageList.children.length > 0) {
+                this.showMessagesSection();
+            } else {
+                this.hideMessagesSection();
+            }
+        }
+    }
+}
+
+// ==========================================
+// SKILLS SECTION
+// ==========================================
+
+class SkillsHandler {
+    /**
+     * Initialize skills section with predefined skills
+     */
+    static init() {
+        const skillsSection = document.querySelector(CONFIG.selectors.skillsSection);
+        if (!skillsSection) return;
+        
+        const skillsList = skillsSection.querySelector('ul');
+        if (!skillsList) return;
+        
+        // Clear existing content
+        skillsList.innerHTML = '';
+        
+        // Create document fragment for better performance
+        const fragment = document.createDocumentFragment();
+        
+        // Add each skill as a list item
+        CONFIG.skills.forEach(skill => {
+            const li = document.createElement('li');
+            li.textContent = skill;
+            fragment.appendChild(li);
+        });
+        
+        // Append all at once
+        skillsList.appendChild(fragment);
+    }
 }
 
 // ==========================================
 // FOOTER
 // ==========================================
 
-/**
- * Create and append footer to the page
- */
-function createFooter() {
-    // Check if footer already exists
-    const existingFooter = document.querySelector('footer');
-    if (existingFooter) return;
-    
-    // Create footer element
-    const footer = document.createElement('footer');
-    
-    // Apply styles
-    footer.style.textAlign = 'center';
-    footer.style.padding = '20px';
-    footer.style.background = 'rgba(0, 0, 0, 0.8)';
-    footer.style.color = 'white';
-    footer.style.marginTop = '40px';
-    footer.style.fontSize = '16px';
-    footer.style.fontWeight = '400';
-    footer.style.width = '100%';
-    
-    // Create copyright paragraph
-    const copyright = document.createElement('p');
-    const currentYear = new Date().getFullYear();
-    copyright.innerHTML = `© ${currentYear} Mia Smith`;
-    
-    // Add copyright to footer
-    footer.appendChild(copyright);
-    
-    // Add footer to body
-    document.body.appendChild(footer);
+class FooterHandler {
+    /**
+     * Create and append footer to the page
+     */
+    static create() {
+        // Check if footer already exists
+        if (document.querySelector('footer')) return;
+        
+        // Create footer element
+        const footer = document.createElement('footer');
+        
+        // Apply styles
+        Object.assign(footer.style, {
+            textAlign: 'center',
+            padding: '20px',
+            background: 'rgba(0, 0, 0, 0.8)',
+            color: 'white',
+            marginTop: '40px',
+            fontSize: '16px',
+            fontWeight: '400',
+            width: '100%'
+        });
+        
+        // Create copyright paragraph
+        const copyright = document.createElement('p');
+        const currentYear = new Date().getFullYear();
+        copyright.innerHTML = `© ${currentYear} Mia Smith`;
+        
+        // Add copyright to footer
+        footer.appendChild(copyright);
+        
+        // Add footer to body
+        document.body.appendChild(footer);
+    }
 }
 
 // ==========================================
-// INITIALIZATION
+// APPLICATION INITIALIZATION
 // ==========================================
 
-/**
- * Initialize all components when DOM is ready
- */
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize skills if section exists
-    initializeSkills();
-    
-    // Create footer
-    createFooter();
-    
-    // Log successful initialization
-    console.log('Portfolio application initialized successfully');
-});
+class PortfolioApp {
+    /**
+     * Initialize the portfolio application
+     */
+    static init() {
+        try {
+            // Initialize message form handler
+            new MessageFormHandler();
+            
+            // Initialize skills section
+            SkillsHandler.init();
+            
+            // Create footer
+            FooterHandler.create();
+            
+            // Log successful initialization
+            console.log('Portfolio application initialized successfully');
+        } catch (error) {
+            console.error('Error initializing portfolio application:', error);
+        }
+    }
+}
+
+// ==========================================
+// BOOTSTRAP APPLICATION
+// ==========================================
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', PortfolioApp.init);
+} else {
+    // DOM is already loaded
+    PortfolioApp.init();
+}
