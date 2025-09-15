@@ -1,553 +1,235 @@
 /**
- * Configuration object containing all constants and selectors
- * @const {Object}
+ * Portfolio Website - Main JavaScript
+ * Handles message form functionality with conditional display
  */
-const CONFIG = {
+
+// ==========================================
+// CONFIGURATION
+// ==========================================
+const PORTFOLIO_CONFIG = {
     selectors: {
         messageForm: 'form[name="leave_message"]',
         messageList: '#message-list',
         messagesSection: '#messages',
-        skillsSection: '#skills',
-        skillsList: '#skills ul',
-        formFields: {
-            name: '#usersName',
-            email: '#usersEmail',
-            message: '#usersMessage'
-        }
+        skillsSection: '#skills'
     },
     classes: {
-        messageItem: 'message-item',
         messageContent: 'message-content',
-        messageSender: 'message-sender',
         messageText: 'message-text',
         removeBtn: 'remove-btn',
         editBtn: 'edit-btn',
-        thankYouMessage: 'thank-you-message',
-        glassContainer: 'glass-container'
+        thankYouMessage: 'thank-you-message'
     },
-    validation: {
-        emailRegex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    messages: {
+        withMessage: (name) => `Thank you ${name} for your message and visiting my portfolio page. I will get back to you as soon as possible and have a wonderful day.`,
+        withoutMessage: (name) => `Thank you ${name} for visiting my portfolio page and have a wonderful day.`
     },
     timing: {
-        thankYouMessageDuration: 5000
-    },
-    footerStyles: {
-        textAlign: 'center',
-        padding: '20px',
-        background: 'rgba(0, 0, 0, 0.8)',
-        color: 'white',
-        marginTop: '40px',
-        fontSize: '16px',
-        fontWeight: '400',
-        width: '100%'
+        thankYouDuration: 5000
     }
 };
 
-/**
- * Utility class containing static helper methods
- */
-class Utils {
-    /**
-     * Sanitizes HTML string to prevent XSS
-     * @param {string} str - String to sanitize
-     * @returns {string} Sanitized string
-     */
-    static sanitizeHTML(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+// ==========================================
+// BASIC MESSAGE FORM IMPLEMENTATION
+// ==========================================
+function initializeMessageForm() {
+    const form = document.querySelector(PORTFOLIO_CONFIG.selectors.messageForm);
+    const section = document.getElementById('messages');
+    const list = section ? section.querySelector(PORTFOLIO_CONFIG.selectors.messageList) : null;
+
+    // Hide messages section initially
+    if (section) {
+        section.style.display = 'none';
     }
 
-    /**
-     * Validates email format
-     * @param {string} email - Email to validate
-     * @returns {boolean} Whether email is valid
-     */
-    static isValidEmail(email) {
-        return CONFIG.validation.emailRegex.test(email);
-    }
-
-    /**
-     * Shows error message in console
-     * @param {string} message - Error message
-     */
-    static showError(message) {
-        console.warn(message);
-    }
-
-    /**
-     * Applies styles to an element
-     * @param {HTMLElement} element - Element to style
-     * @param {Object} styles - Styles to apply
-     */
-    static applyStyles(element, styles) {
-        Object.assign(element.style, styles);
-    }
-
-    /**
-     * Gets current year
-     * @returns {number} Current year
-     */
-    static getCurrentYear() {
-        return new Date().getFullYear();
-    }
-}
-
-/**
- * Form validation class
- */
-class FormValidator {
-    /**
-     * Validates form data
-     * @param {Object} formData - Form data to validate
-     * @returns {Object} Validation result with isValid and errors
-     */
-    static validate(formData) {
-        const errors = [];
-
-        if (!formData.name || !formData.name.trim()) {
-            errors.push('Name is required');
-        }
-
-        if (!formData.email || !formData.email.trim()) {
-            errors.push('Email is required');
-        } else if (!Utils.isValidEmail(formData.email)) {
-            errors.push('Invalid email format');
-        }
-
-        // Message field is optional, no validation needed
-
-        return {
-            isValid: errors.length === 0,
-            errors
-        };
-    }
-}
-
-/**
- * Skills section handler
- */
-class SkillsHandler {
-    /**
-     * Initializes skills section
-     * @param {string[]} skills - Array of skills
-     */
-    static init(skills) {
-        const skillsSection = document.querySelector(CONFIG.selectors.skillsSection);
-        const skillsList = skillsSection?.querySelector('ul');
-        
-        if (skillsList) {
-            const fragment = document.createDocumentFragment();
-            skills.forEach(skill => {
-                const li = document.createElement('li');
-                li.textContent = skill;
-                fragment.appendChild(li);
-            });
-            skillsList.appendChild(fragment);
-        }
-    }
-}
-
-/**
- * Footer handler
- */
-class FooterHandler {
-    /**
-     * Creates and appends footer
-     */
-    static init() {
-        const footer = document.createElement('footer');
-        const copyright = document.createElement('p');
-        copyright.innerHTML = `© ${Utils.getCurrentYear()} Mia Smith`;
-        footer.appendChild(copyright);
-        Utils.applyStyles(footer, CONFIG.footerStyles);
-        document.body.appendChild(footer);
-    }
-}
-
-/**
- * Handles message form functionality including submission, validation, and display
- */
-class MessageFormHandler {
-    /**
-     * Initialize the message form handler
-     */
-    constructor() {
-        this.messageForm = null;
-        this.messageList = null;
-        this.messagesSection = null;
-        this.boundHandleSubmission = this.handleFormSubmission.bind(this);
-    }
-
-    /**
-     * Initialize the handler and set up event listeners
-     */
-    init() {
-        try {
-            this.cacheElements();
-            this.validateElements();
-            this.setupEventListeners();
-            this.checkMessageListVisibility();
-        } catch (error) {
-            Utils.showError(`Initialization failed: ${error.message}`);
-        }
-    }
-
-    /**
-     * Cache DOM elements for better performance
-     * @private
-     */
-    cacheElements() {
-        this.messageForm = document.querySelector(CONFIG.selectors.messageForm);
-        this.messageList = document.querySelector(CONFIG.selectors.messageList);
-        this.messagesSection = document.querySelector(CONFIG.selectors.messagesSection);
-    }
-
-    /**
-     * Validate that required elements exist
-     * @private
-     * @throws {Error} If required elements are missing
-     */
-    validateElements() {
-        if (!this.messageForm || !this.messageList || !this.messagesSection) {
-            throw new Error('Required message form elements not found');
-        }
-    }
-
-    /**
-     * Set up event listeners for the form
-     * @private
-     */
-    setupEventListeners() {
-        this.messageForm.addEventListener('submit', this.boundHandleSubmission);
-    }
-
-    /**
-     * Clean up event listeners
-     */
-    destroy() {
-        this.messageForm?.removeEventListener('submit', this.boundHandleSubmission);
-    }
-
-    /**
-     * Handle form submission
-     * @param {Event} event - The submit event
-     */
-    handleFormSubmission(event) {
-        event.preventDefault();
-
-        const userName = event.target.usersName.value;
-        const userEmail = event.target.usersEmail.value;
-        const userMessage = event.target.usersMessage.value;
-        console.log(userName, userEmail, userMessage);
-
-        try {
-            const formData = this.extractFormData(event.target);
-            const validation = FormValidator.validate(formData);
-
-            if (!validation.isValid) {
-                Utils.showError(validation.errors.join(', '));
+    if (form && list && section) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get form values as per assignment
+            const userName = event.target.usersName.value.trim();
+            const userEmail = event.target.usersEmail.value.trim();
+            const userMessage = event.target.usersMessage.value.trim();
+            
+            // Log values as required
+            console.log(userName, userEmail, userMessage);
+            
+            // Validate required fields
+            if (!userName || !userEmail) {
+                alert('Please fill in name and email');
                 return;
             }
-
-            // If no message or empty message, just reset the form and return
-            if (!formData.message || !formData.message.trim()) {
-                this.resetForm(this.messageForm);
-                return;
-            }
-
-            this.processFormSubmission(formData);
-        } catch (error) {
-            Utils.showError(`Form submission failed: ${error.message}`);
-        }
-    }
-
-    /**
-     * Process valid form submission
-     * @private
-     * @param {Object} formData - The validated form data
-     */
-    processFormSubmission(formData) {
-        this.removeExistingThankYouMessages();
-        const messageElement = this.createMessageElement(formData);
-        this.addMessageToList(messageElement);
-        this.showMessagesSection();
-        this.resetForm(this.messageForm);
-        this.showThankYouMessage(formData.name);
-    }
-
-    /**
-     * Extract data from form
-     * @private
-     * @param {HTMLFormElement} form - The form element
-     * @returns {Object} The extracted form data
-     */
-    extractFormData(form) {
-        return {
-            name: form.usersName.value.trim(),
-            email: form.usersEmail.value.trim(),
-            message: form.usersMessage.value.trim()
-        };
-    }
-
-    /**
-     * Create message element with proper structure and events
-     * @private
-     * @param {Object} formData - The validated form data
-     * @returns {HTMLElement} The created message element
-     */
-    createMessageElement(formData) {
-        const messageItem = document.createElement('li');
-        messageItem.className = CONFIG.classes.messageItem;
-        
-        messageItem.innerHTML = `
-            <div class="${CONFIG.classes.messageContent}">
-                <a href="mailto:${Utils.sanitizeHTML(formData.email)}" 
-                   class="${CONFIG.classes.messageSender}">
-                    ${Utils.sanitizeHTML(formData.name)}
-                </a>
-                <p class="${CONFIG.classes.messageText}">
-                    ${Utils.sanitizeHTML(formData.message)}
-                </p>
-            </div>
-        `;
-
-        const removeButton = this.createRemoveButton();
-        const editButton = this.createEditButton();
-        
-        const messageContent = messageItem.querySelector(`.${CONFIG.classes.messageContent}`);
-        messageContent.appendChild(editButton);
-        messageContent.appendChild(removeButton);
-
-        return messageItem;
-    }
-
-    /**
-     * Create remove button with proper attributes and events
-     * @private
-     * @returns {HTMLButtonElement} The created button
-     */
-    createRemoveButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = CONFIG.classes.removeBtn;
-        button.textContent = 'Remove';
-        button.setAttribute('aria-label', 'Remove message');
-        
-        button.addEventListener('click', () => this.removeMessage(button));
-        
-        return button;
-    }
-
-    /**
-     * Create edit button with proper attributes and events
-     * @private
-     * @returns {HTMLButtonElement} The created edit button
-     */
-    createEditButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = CONFIG.classes.editBtn;
-        button.textContent = 'Edit';
-        button.setAttribute('aria-label', 'Edit message');
-        
-        button.addEventListener('click', () => this.editMessage(button));
-        
-        return button;
-    }
-
-    /**
-     * Remove message and update visibility    createEditButton() {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = CONFIG.classes.editBtn;
-        button.textContent = 'Edit';
-        button.setAttribute('aria-label', 'Edit message');
-
-        button.addEventListener('click', () => this.editMessage(button));
-
-        return button;
-    }
-
-    /**
-     * Remove message and update visibility
-     * @param {HTMLButtonElement} button - The remove button
-     */
-    removeMessage(button) {
-        const messageItem = button.closest(`.${CONFIG.classes.messageItem}`);
-        if (messageItem) {
-            messageItem.remove();
-            this.checkMessageListVisibility();
-        }
-    }
-
-    /**
-     * Edit message content
-     * @param {HTMLButtonElement} button - The edit button
-     */
-    editMessage(button) {
-        const messageItem = button.closest(`.${CONFIG.classes.messageItem}`);
-        if (messageItem) {
-            const messageTextElement = messageItem.querySelector(`.${CONFIG.classes.messageText}`);
-            if (messageTextElement) {
-                const currentText = messageTextElement.textContent.trim();
-                const newText = prompt('Edit your message:', currentText);
+            
+            // Clear existing thank you messages
+            const existingThankYou = document.querySelectorAll(`.${PORTFOLIO_CONFIG.classes.thankYouMessage}`);
+            existingThankYou.forEach(msg => msg.remove());
+            
+            // Check if user provided a message
+            if (userMessage) {
+                // User provided a message - add to list and show section
+                const newMessage = document.createElement('li');
+                newMessage.innerHTML = `
+                    <div class="${PORTFOLIO_CONFIG.classes.messageContent}">
+                        <a href="mailto:${userEmail}">${userName}</a>
+                        <span class="${PORTFOLIO_CONFIG.classes.messageText}">${userMessage}</span>
+                    </div>
+                `;
                 
-                if (newText !== null && newText.trim() !== '' && newText.trim() !== currentText) {
-                    messageTextElement.textContent = Utils.sanitizeHTML(newText.trim());
-                }
+                // Create edit button
+                const editButton = document.createElement('button');
+                editButton.innerText = 'edit';
+                editButton.type = 'button';
+                editButton.className = PORTFOLIO_CONFIG.classes.editBtn;
+                editButton.addEventListener('click', function() {
+                    const messageSpan = this.closest('li').querySelector(`.${PORTFOLIO_CONFIG.classes.messageText}`);
+                    const newText = prompt('Edit your message:', messageSpan.textContent);
+                    if (newText !== null && newText.trim() !== '') {
+                        messageSpan.textContent = newText.trim();
+                    }
+                });
+                
+                // Create remove button
+                const removeButton = document.createElement('button');
+                removeButton.innerText = 'remove';
+                removeButton.type = 'button';
+                removeButton.className = PORTFOLIO_CONFIG.classes.removeBtn;
+                removeButton.addEventListener('click', function() {
+                    this.closest('li').remove();
+                    checkMessageList(section, list);
+                });
+                
+                // Add buttons to message
+                const messageContent = newMessage.querySelector(`.${PORTFOLIO_CONFIG.classes.messageContent}`);
+                messageContent.appendChild(editButton);
+                messageContent.appendChild(removeButton);
+                
+                // Add message to list
+                list.appendChild(newMessage);
+                
+                // Show messages section
+                section.style.display = 'block';
+                
+                // Show thank you message with message
+                showThankYouMessage(PORTFOLIO_CONFIG.messages.withMessage(userName), form);
+            } else {
+                // No message provided - just show thank you
+                showThankYouMessage(PORTFOLIO_CONFIG.messages.withoutMessage(userName), form);
+                // Keep messages section hidden
             }
-        }
-    }
-
-    /**
-     * Add message to list
-     * @private
-     * @param {HTMLElement} messageElement - The message element to add
-     */
-    addMessageToList(messageElement) {
-        this.messageList.appendChild(messageElement);
-    }
-
-    /**
-     * Show messages section
-     */
-    showMessagesSection() {
-        this.messagesSection.style.display = 'block';
-    }
-
-    /**
-     * Check and update message list visibility
-     */
-    checkMessageListVisibility() {
-        this.messagesSection.style.display = 
-        this.messageList.children.length > 0 ? 'block' : 'none';
-    }
-
-    /**
-     * Reset form fields
-     * @private
-     * @param {HTMLFormElement} form - The form to reset
-     */
-    resetForm(form) {
-        form.reset();
-    }
-
-    /**
-     * Show thank you message with proper accessibility
-     * @private
-     * @param {string} userName - The user's name
-     */
-    showThankYouMessage(userName) {
-        const thankYouDiv = document.createElement('div');
-        thankYouDiv.className = CONFIG.classes.thankYouMessage;
-        thankYouDiv.setAttribute('role', 'alert');
-        thankYouDiv.setAttribute('aria-live', 'polite');
-        
-        thankYouDiv.innerHTML = `
-            <p>Thank you ${Utils.sanitizeHTML(userName)} for visiting my portfolio site! 
-            I will get back to you as soon as possible.</p>
-        `;
-        
-        this.messageForm.parentNode.insertBefore(thankYouDiv, this.messageForm.nextSibling);
-        
-        setTimeout(() => {
-            if (thankYouDiv.parentNode) {
-                thankYouDiv.remove();
-            }
-        }, CONFIG.timing.thankYouMessageDuration);
-    }
-
-    /**
-     * Remove existing thank you messages
-     * @private
-     */
-    removeExistingThankYouMessages() {
-        const existingMessages = document.querySelectorAll(`.${CONFIG.classes.thankYouMessage}`);
-        existingMessages.forEach(message => message.remove());
+            
+            // Reset form
+            event.target.reset();
+        });
     }
 }
 
-// Create a new date object
-const today = new Date();
-
-// Get the current year
-const thisYear = today.getFullYear();
-
-// Create skills array
-const skills = [
-    "HTML5 & Semantic Markup",
-    "CSS3 & Modern Layouts",
-    "JavaScript (ES6+)",
-    "React.js",
-    "Node.js",
-    "Express.js",
-    "MongoDB",
-    "RESTful APIs",
-    "Git Version Control",
-    "Responsive Design",
-    "Web Accessibility",
-    "MERN Stack"
-];
-
-/**
- * Main portfolio application controller
- */
-class PortfolioApp {
-    constructor() {
-        this.messageHandler = null;
-    }
-
-    /**
-     * Initialize the application
-     */
-    init() {
-        try {
-            this.initializeComponents();
-            this.setupEventListeners();
-        } catch (error) {
-            Utils.showError(`Application initialization failed: ${error.message}`);
-        }
-    }
-
-    /**
-     * Initialize all application components
-     * @private
-     */
-    initializeComponents() {
-        // Initialize message form
-        this.messageHandler = new MessageFormHandler();
-        this.messageHandler.init();
-
-        // Initialize skills section
-        SkillsHandler.init(skills);
-
-        // Initialize footer
-        FooterHandler.init();
-    }
-
-    /**
-     * Set up global event listeners
-     * @private
-     */
-    setupEventListeners() {
-        // Add any global event listeners here
-        window.addEventListener('unload', () => this.cleanup());
-    }
-
-    /**
-     * Clean up resources
-     * @private
-     */
-    cleanup() {
-        if (this.messageHandler) {
-            this.messageHandler.destroy();
-        }
+// Function to check message list visibility
+function checkMessageList(section, list) {
+    if (section && list) {
+        section.style.display = 
+            list.children.length > 0 ? 'block' : 'none';
     }
 }
 
-// Initialize the application when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const app = new PortfolioApp();
-    app.init();
+// Function to show thank you message
+function showThankYouMessage(message, form) {
+    const thankYouDiv = document.createElement('div');
+    thankYouDiv.className = PORTFOLIO_CONFIG.classes.thankYouMessage;
+    thankYouDiv.setAttribute('role', 'alert');
+    thankYouDiv.setAttribute('aria-live', 'polite');
+    
+    const paragraph = document.createElement('p');
+    paragraph.textContent = message;
+    thankYouDiv.appendChild(paragraph);
+    
+    // Insert after the form
+    if (form && form.parentNode) {
+        form.parentNode.insertBefore(thankYouDiv, form.nextSibling);
+    }
+    
+    // Remove after duration
+    setTimeout(() => {
+        if (thankYouDiv.parentNode) {
+            thankYouDiv.remove();
+        }
+    }, PORTFOLIO_CONFIG.timing.thankYouDuration);
+}
+
+// ==========================================
+// SKILLS SECTION HANDLER
+// ==========================================
+function initializeSkills() {
+    const skills = [
+        "HTML5 & Semantic Markup",
+        "CSS3 & Modern Layouts",
+        "JavaScript (ES6+)",
+        "React.js",
+        "Node.js",
+        "Express.js",
+        "MongoDB",
+        "RESTful APIs",
+        "Git Version Control",
+        "Responsive Design",
+        "Web Accessibility",
+        "MERN Stack"
+    ];
+
+    const skillsSection = document.querySelector('#skills');
+    if (!skillsSection) return;
+
+    const skillsList = skillsSection.querySelector('ul');
+    if (!skillsList) return;
+
+    // Clear and populate skills list
+    skillsList.innerHTML = '';
+    skills.forEach(skill => {
+        const li = document.createElement('li');
+        li.textContent = skill;
+        skillsList.appendChild(li);
+    });
+}
+
+// ==========================================
+// FOOTER GENERATOR
+// ==========================================
+function createFooter() {
+    // Check if footer already exists
+    if (document.querySelector('footer')) {
+        return;
+    }
+
+    const footer = document.createElement('footer');
+    footer.style.cssText = `
+        text-align: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        margin-top: 40px;
+        font-size: 16px;
+        font-weight: 400;
+        width: 100%;
+    `;
+
+    const copyright = document.createElement('p');
+    const currentYear = new Date().getFullYear();
+    copyright.innerHTML = `© ${currentYear} Mia Smith`;
+    footer.appendChild(copyright);
+
+    document.body.appendChild(footer);
+}
+
+// ==========================================
+// INITIALIZE APPLICATION
+// ==========================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize message form
+    initializeMessageForm();
+    
+    // Initialize skills section
+    initializeSkills();
+    
+    // Create footer
+    createFooter();
+    
+    console.log('Portfolio application initialized successfully');
 });
