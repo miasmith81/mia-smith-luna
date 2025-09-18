@@ -27,6 +27,9 @@ skills.forEach(skillText => {
     skillsList.appendChild(skill);
 });
 
+// Get the current year
+const thisYear = new Date().getFullYear();
+
 // Create a footer element since it doesn't exist in HTML
 const footer = document.createElement('footer');
 
