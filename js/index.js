@@ -1,8 +1,8 @@
-// Create a new date object
-const today = new Date();
+// Get the skills section using getElementById
+const skillsSection = document.getElementById('skills');
 
-// Get the current year
-const thisYear = today.getFullYear();
+// Get the unordered list within the skills section
+const skillsList = skillsSection.getElementsByTagName('ul')[0];
 
 // Create skills array
 const skills = [
@@ -20,16 +20,12 @@ const skills = [
     "MERN Stack"
 ];
 
-// Select the skills section and create list elements
-const skillsSection = document.querySelector('#skills');
-const skillsList = skillsSection.querySelector('ul');
-
 // Create and append skill items
-for (let i = 0; i < skills.length; i++) {
+skills.forEach(skillText => {
     const skill = document.createElement('li');
-    skill.innerText = skills[i];
+    skill.textContent = skillText;
     skillsList.appendChild(skill);
-}
+});
 
 // Create a footer element since it doesn't exist in HTML
 const footer = document.createElement('footer');
