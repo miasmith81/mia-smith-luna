@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
     <title>Mia Smith - Web Developer Portfolio</title>
+    <script src="js/articcarousel.js" defer></script>
     <script src="js/index.js" defer></script>
 </head>
 
@@ -24,6 +25,7 @@
                 <li><a href="#about" data-text="About">About</a></li>
                 <li><a href="#skills" data-text="Skills">Skills</a></li>
                 <li><a href="#projects" data-text="Projects">Projects</a></li>
+                <li><a href="#artic" data-text="Art Collection">Art Collection</a></li>
                 <li><a href="#experience" data-text="Experience">Experience</a></li>
                 <li><a href="#leave-message" data-text="Leave A Message">Leave A Message</a></li>
                 <li><a href="#connect" data-text="Connect">Connect</a></li>
@@ -114,6 +116,75 @@
                 <ul class="projects-grid">
                     <!-- GitHub repositories will be loaded here dynamically -->
                 </ul>
+            </div>
+        </section>
+
+        <!-- Art Institute of Chicago Gallery Section -->
+        <section id="artic" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Art Institute of Chicago Collection</h2>
+                    <p class="subtitle">Discover masterpieces from one of the world's premier art museums</p>
+                </div>
+                <div class="art-carousel-container">
+                    <div class="carousel-header">
+                        <h3>Featured Public Domain Artworks</h3>
+                        <div class="carousel-controls">
+                            <button class="carousel-btn prev-btn" aria-label="Previous artwork">‹</button>
+                            <button class="carousel-btn next-btn" aria-label="Next artwork">›</button>
+                        </div>
+                    </div>
+                    <div class="art-carousel">
+                        <div class="carousel-track">
+                            <!-- Artworks will be loaded here dynamically -->
+                        </div>
+                    </div>
+                    <div class="carousel-loading">
+                        <p>Loading amazing artworks from the Art Institute of Chicago...</p>
+                    </div>
+                    <div class="carousel-error" style="display: none;">
+                        <p>Unable to load artworks at this time. Please try again later.</p>
+                    </div>
+                </div>
+                <div class="artwork-detail-viewer" id="artwork-detail-viewer" style="display: none;">
+                    <div class="artwork-detail-container">
+                        <div class="artwork-detail-header">
+                            <h3>Artwork Details</h3>
+                            <button class="close-detail-btn" aria-label="Close artwork details">✕</button>
+                        </div>
+                        <div class="artwork-detail-content">
+                            <div class="artwork-detail-image-container">
+                                <img src="" alt="" class="artwork-detail-image" id="detail-image">
+                                <div class="artwork-detail-loading">Loading artwork details...</div>
+                            </div>
+                            <div class="artwork-detail-info">
+                                <div class="artwork-detail-text">
+                                    <h4 class="detail-title" id="detail-title">Artwork Title</h4>
+                                    <div class="detail-artist-section">
+                                        <h5 class="detail-artist-name" id="detail-artist-name">Artist Name</h5>
+                                        <p class="detail-artist-bio" id="detail-artist-bio">Artist biography and information...</p>
+                                    </div>
+                                    <div class="detail-artwork-info">
+                                        <p class="detail-date" id="detail-date">Date created</p>
+                                        <p class="detail-medium" id="detail-medium">Medium and materials</p>
+                                        <p class="detail-dimensions" id="detail-dimensions">Dimensions</p>
+                                        <p class="detail-credit" id="detail-credit">Credit line</p>
+                                    </div>
+                                    <div class="detail-significance">
+                                        <h5>Historical Significance</h5>
+                                        <p class="detail-description" id="detail-description">Description of the artwork's role and importance...</p>
+                                    </div>
+                                    <div class="detail-actions">
+                                        <a href="#" target="_blank" rel="noopener noreferrer" class="detail-museum-link" id="detail-museum-link">
+                                            View Full Details at AIC
+                                            <span>→</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 

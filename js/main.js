@@ -334,8 +334,18 @@ class PortfolioApp {
 
         // Initialize GitHub repositories
         GitHubHandler.init();
+
+        // Initialize ARTIC carousel
+        this.articCarousel = new ArticCarousel();
+        this.articCarousel.init();
         
         console.log('Portfolio application initialized successfully');
+    }
+
+    static cleanup() {
+        if (this.articCarousel) {
+            this.articCarousel = null;
+        }
     }
 }
 
