@@ -319,6 +319,144 @@ class GitHubHandler {
 }
 
 /**
+ * Art Institute of Chicago API integration
+ */
+class ArticApiHandler {
+    static ARTWORK_ID = '27992'; // "A Sunday on La Grande Jatte" artwork ID
+    static API_BASE_URL = 'https://api.artic.edu/api/v1';
+    static MUSEUM_URL = 'https://www.artic.edu/';
+
+    /**
+     * Initialize ARTIC API integration
+     */
+    static async init() {
+        try {
+            console.log('Initializing Art Institute of Chicago API integration...');
+            await this.fetchAndDisplayArtwork();
+        } catch (error) {
+            Utils.showError(`Failed to initialize ARTIC API: ${error.message}`);
+        }
+    }
+
+    /**
+     * Fetch artwork data from ARTIC API
+     * @returns {Promise<Object>} Artwork data object
+     */
+    static async fetchArtworkData() {
+        const response = await fetch(`${this.API_BASE_URL}/artworks/${this.ARTWORK_ID}?fields=id,title,artist_display,date_display,medium_display,dimensions,credit_line,image_id,description,artist_titles,artist_ids`);
+        
+        if (!response.ok) {
+            throw new Error(`ARTIC API error: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        return result.data;
+    }
+
+    /**
+     * Fetch artist biography data
+     * @param {Array} artistIds - Array of artist IDs
+     * @returns {Promise<string>} Artist biography
+     */
+    static async fetchArtistBio(artistIds) {
+        if (!artistIds || artistIds.length === 0) {
+            return 'Artist information not available.';
+        }
+
+        try {
+            const artistId = artistIds[0]; // Get the first artist
+            const response = await fetch(`${this.API_BASE_URL}/artists/${artistId}?fields=description,birth_date,death_date`);
+            
+            if (!response.ok) {
+                return 'Artist biography not available.';
+            }
+            
+            const result = await response.json();
+            const artist = result.data;
+            
+            let bio = '';
+            if (artist.birth_date && artist.death_date) {
+                bio += `(${artist.birth_date} - ${artist.death_date}) `;
+            }
+            bio += artist.description || 'Detailed biography not available.';
+            
+            return bio;
+        } catch (error) {
+            console.error('Error fetching artist biography:', error);
+            return 'Artist biography not available.';
+        }
+    }
+
+    /**
+     * Fetch and display artwork in the detail viewer
+     */
+    static async fetchAndDisplayArtwork() {
+        try {
+            const artwork = await this.fetchArtworkData();
+            const artistBio = await this.fetchArtistBio(artwork.artist_ids);
+            
+            this.populateArtworkDetails(artwork, artistBio);
+            console.log('ARTIC artwork data loaded successfully:', artwork);
+        } catch (error) {
+            Utils.showError(`Failed to fetch artwork data: ${error.message}`);
+        }
+    }
+
+    /**
+     * Populate the artwork detail viewer with fetched data
+     * @param {Object} artwork - Artwork data object
+     * @param {string} artistBio - Artist biography
+     */
+    static populateArtworkDetails(artwork, artistBio) {
+        const detailViewer = document.getElementById('artwork-detail-viewer');
+        if (!detailViewer) return;
+
+        // Populate image
+        const detailImage = document.getElementById('detail-image');
+        if (detailImage && artwork.image_id) {
+            const imageUrl = `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`;
+            detailImage.src = imageUrl;
+            detailImage.alt = artwork.title || 'Artwork';
+        }
+
+        // Populate text content
+        this.updateElementText('detail-title', artwork.title || 'Unknown Title');
+        this.updateElementText('detail-artist-name', artwork.artist_display || 'Unknown Artist');
+        this.updateElementText('detail-artist-bio', artistBio);
+        this.updateElementText('detail-date', artwork.date_display || 'Date unknown');
+        this.updateElementText('detail-medium', artwork.medium_display || 'Medium unknown');
+        this.updateElementText('detail-dimensions', artwork.dimensions || 'Dimensions unknown');
+        this.updateElementText('detail-credit', artwork.credit_line || 'Credit information unavailable');
+        
+        // Set description with fallback
+        const description = artwork.description || 
+            `"A Sunday on La Grande Jatte" is one of Georges Seurat's most famous works, representing the pinnacle of Neo-Impressionist technique. Created using pointillism, this masterpiece depicts Parisians enjoying leisure time on an island in the Seine River. The painting is celebrated for its innovative technique, compositional harmony, and its representation of modern urban life in late 19th century Paris.`;
+        this.updateElementText('detail-description', description);
+
+        // Update museum link
+        const museumLink = document.getElementById('detail-museum-link');
+        if (museumLink) {
+            museumLink.href = this.MUSEUM_URL;
+            museumLink.textContent = 'Visit Art Institute of Chicago →';
+        }
+    }
+
+    /**
+     * Helper method to update element text content safely
+     * @param {string} elementId - Element ID
+     * @param {string} text - Text content to set
+     */
+    static updateElementText(elementId, text) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = text;
+        }
+    }
+}
+
+
+
+/**
  * Main portfolio application
  */
 class PortfolioApp {
@@ -334,6 +472,9 @@ class PortfolioApp {
 
         // Initialize GitHub repositories
         GitHubHandler.init();
+
+        // Initialize ARTIC API integration
+        ArticApiHandler.init();
 
         // Initialize ARTIC carousel
         this.articCarousel = new ArticCarousel();
