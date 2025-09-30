@@ -280,7 +280,7 @@ class GitHubHandler {
      * @returns {Promise<Array>} Array of repository objects
      */
     static async fetchRepositories() {
-        const response = await fetch(`https://api.github.com/users/${CONFIG.github.miasmith81}/repos`);
+        const response = await fetch(`https://api.github.com/users/${CONFIG.github.username}/repos`);
                 
         if (!response.ok) {
             throw new Error(`GitHub API error: ${response.status}`);
@@ -305,7 +305,7 @@ class GitHubHandler {
             project.className = 'project-item';
             project.innerHTML = `
                 <div class="project-content">
-<h3 class="project-title">${Utils.sanitizeHTML(repositories[i].miasmith81)}</h3>
+                    <h3 class="project-title">${Utils.sanitizeHTML(repositories[i].name)}</h3>
                     <p class="project-description">${Utils.sanitizeHTML(repositories[i].description || 'No description available')}</p>
                     <div class="project-links">
                         <a href="${repositories[i].html_url}" target="_blank" rel="noopener noreferrer" class="project-link">View Repository</a>
@@ -319,137 +319,118 @@ class GitHubHandler {
 }
 
 /**
- * Art Institute of Chicago API integration
+ * Art Institute of Chicago API Service
  */
-class ArticApiHandler {
-    static ARTWORK_ID = '27992'; // "A Sunday on La Grande Jatte" artwork ID
-    static API_BASE_URL = 'https://api.artic.edu/api/v1';
-    static MUSEUM_URL = 'https://www.artic.edu/';
+class ArticService {
+    static ARTWORK_ID = 27992;
+    static API_BASE = 'https://api.artic.edu/api/v1/artworks';
+    static IMAGE_BASE = 'https://www.artic.edu/iiif/2';
 
-    /**
-     * Initialize ARTIC API integration
-     */
-    static async init() {
+    static async fetchArtwork() {
         try {
-            console.log('Initializing Art Institute of Chicago API integration...');
-            await this.fetchAndDisplayArtwork();
-        } catch (error) {
-            Utils.showError(`Failed to initialize ARTIC API: ${error.message}`);
-        }
-    }
-
-    /**
-     * Fetch artwork data from ARTIC API
-     * @returns {Promise<Object>} Artwork data object
-     */
-    static async fetchArtworkData() {
-        const response = await fetch(`${this.API_BASE_URL}/artworks/${this.ARTWORK_ID}?fields=id,title,artist_display,date_display,medium_display,dimensions,credit_line,image_id,description,artist_titles,artist_ids`);
-        
-        if (!response.ok) {
-            throw new Error(`ARTIC API error: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        return result.data;
-    }
-
-    /**
-     * Fetch artist biography data
-     * @param {Array} artistIds - Array of artist IDs
-     * @returns {Promise<string>} Artist biography
-     */
-    static async fetchArtistBio(artistIds) {
-        if (!artistIds || artistIds.length === 0) {
-            return 'Artist information not available.';
-        }
-
-        try {
-            const artistId = artistIds[0]; // Get the first artist
-            const response = await fetch(`${this.API_BASE_URL}/artists/${artistId}?fields=description,birth_date,death_date`);
+            console.log('Fetching artwork from ARTIC API...');
+            const response = await fetch(`${this.API_BASE}/${this.ARTWORK_ID}`);
             
             if (!response.ok) {
-                return 'Artist biography not available.';
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            const result = await response.json();
-            const artist = result.data;
-            
-            let bio = '';
-            if (artist.birth_date && artist.death_date) {
-                bio += `(${artist.birth_date} - ${artist.death_date}) `;
-            }
-            bio += artist.description || 'Detailed biography not available.';
-            
-            return bio;
+            const data = await response.json();
+            console.log('Artwork data received:', data);
+            return data.data;
         } catch (error) {
-            console.error('Error fetching artist biography:', error);
-            return 'Artist biography not available.';
+            console.error('Error fetching artwork:', error);
+            throw error;
         }
     }
 
-    /**
-     * Fetch and display artwork in the detail viewer
-     */
-    static async fetchAndDisplayArtwork() {
-        try {
-            const artwork = await this.fetchArtworkData();
-            const artistBio = await this.fetchArtistBio(artwork.artist_ids);
-            
-            this.populateArtworkDetails(artwork, artistBio);
-            console.log('ARTIC artwork data loaded successfully:', artwork);
-        } catch (error) {
-            Utils.showError(`Failed to fetch artwork data: ${error.message}`);
-        }
+    static getImageUrl(imageId, width = 843) {
+        if (!imageId) return '';
+        return `${this.IMAGE_BASE}/${imageId}/full/${width},/0/default.jpg`;
     }
 
-    /**
-     * Populate the artwork detail viewer with fetched data
-     * @param {Object} artwork - Artwork data object
-     * @param {string} artistBio - Artist biography
-     */
-    static populateArtworkDetails(artwork, artistBio) {
-        const detailViewer = document.getElementById('artwork-detail-viewer');
-        if (!detailViewer) return;
-
-        // Populate image
-        const detailImage = document.getElementById('detail-image');
-        if (detailImage && artwork.image_id) {
-            const imageUrl = `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`;
-            detailImage.src = imageUrl;
-            detailImage.alt = artwork.title || 'Artwork';
-        }
-
-        // Populate text content
-        this.updateElementText('detail-title', artwork.title || 'Unknown Title');
-        this.updateElementText('detail-artist-name', artwork.artist_display || 'Unknown Artist');
-        this.updateElementText('detail-artist-bio', artistBio);
-        this.updateElementText('detail-date', artwork.date_display || 'Date unknown');
-        this.updateElementText('detail-medium', artwork.medium_display || 'Medium unknown');
-        this.updateElementText('detail-dimensions', artwork.dimensions || 'Dimensions unknown');
-        this.updateElementText('detail-credit', artwork.credit_line || 'Credit information unavailable');
+    static displayArtwork(artwork) {
+        console.log('Displaying artwork:', artwork);
+        const container = document.getElementById('artic-artwork-container');
         
-        // Set description with fallback
-        const description = artwork.description || 
-            `"A Sunday on La Grande Jatte" is one of Georges Seurat's most famous works, representing the pinnacle of Neo-Impressionist technique. Created using pointillism, this masterpiece depicts Parisians enjoying leisure time on an island in the Seine River. The painting is celebrated for its innovative technique, compositional harmony, and its representation of modern urban life in late 19th century Paris.`;
-        this.updateElementText('detail-description', description);
-
-        // Update museum link
-        const museumLink = document.getElementById('detail-museum-link');
-        if (museumLink) {
-            museumLink.href = this.MUSEUM_URL;
-            museumLink.textContent = 'Visit Art Institute of Chicago →';
+        if (!container) {
+            console.error('ARTIC container not found!');
+            return;
         }
+
+        const title = artwork.title || 'Untitled';
+        const artist = artwork.artist_display || 'Unknown Artist';
+        const dateDisplay = artwork.date_display || 'Date unknown';
+        const medium = artwork.medium_display || 'Medium not specified';
+        const dimensions = artwork.dimensions || 'Dimensions not available';
+        const creditLine = artwork.credit_line || '';
+        const imageId = artwork.image_id;
+
+        let htmlContent = '<div class="artic-content">';
+
+        if (imageId) {
+            const imageUrl = this.getImageUrl(imageId);
+            htmlContent += `
+                <div class="artic-image-wrapper">
+                    <img src="${imageUrl}" 
+                         alt="${title}" 
+                         class="artic-image"
+                         loading="lazy"
+                         onerror="console.error('Image failed to load')">
+                </div>
+            `;
+        }
+
+        htmlContent += `
+            <div class="artic-info">
+                <h3 class="artic-title">${title}</h3>
+                <p class="artic-artist">${artist}</p>
+                <p class="artic-date">${dateDisplay}</p>
+                
+                <div class="artic-details">
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Medium:</span> ${medium}
+                    </div>
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Dimensions:</span> ${dimensions}
+                    </div>
+                    ${creditLine ? `
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Credit:</span> ${creditLine}
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <a href="https://www.artic.edu/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="artic-link">
+                    Visit Art Institute of Chicago
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+        `;
+
+        htmlContent += '</div>';
+        container.innerHTML = htmlContent;
+        console.log('Artwork displayed successfully');
     }
 
-    /**
-     * Helper method to update element text content safely
-     * @param {string} elementId - Element ID
-     * @param {string} text - Text content to set
-     */
-    static updateElementText(elementId, text) {
-        const element = document.getElementById(elementId);
-        if (element) {
-            element.textContent = text;
+    static showError(message) {
+        console.error('ARTIC Error:', message);
+        const container = document.getElementById('artic-artwork-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="artic-error">
+                    <p><strong>Error loading artwork:</strong></p>
+                    <p>${message}</p>
+                    <p>Please try refreshing the page.</p>
+                </div>
+            `;
         }
     }
 }
@@ -472,15 +453,29 @@ class PortfolioApp {
 
         // Initialize GitHub repositories
         GitHubHandler.init();
-
-        // Initialize ARTIC API integration
-        ArticApiHandler.init();
+        
+        // Initialize ARTIC artwork
+        this.initializeArticArtwork();
 
         // Initialize ARTIC carousel
         this.articCarousel = new ArticCarousel();
         this.articCarousel.init();
         
         console.log('Portfolio application initialized successfully');
+    }
+
+    /**
+     * Initialize Art Institute of Chicago artwork display
+     */
+    async initializeArticArtwork() {
+        console.log('Initializing ARTIC artwork...');
+        try {
+            const artwork = await ArticService.fetchArtwork();
+            ArticService.displayArtwork(artwork);
+        } catch (error) {
+            console.error('ARTIC initialization failed:', error);
+            ArticService.showError('Failed to load artwork from Art Institute of Chicago API. Please check your internet connection.');
+        }
     }
 
     static cleanup() {

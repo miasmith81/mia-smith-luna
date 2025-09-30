@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +12,7 @@
     <title>Mia Smith - Web Developer Portfolio</title>
     <script src="js/articcarousel.js" defer></script>
     <script src="js/index.js" defer></script>
+    <script src="js/main.js" defer></script>
 </head>
 
 <body>
@@ -123,8 +125,11 @@
         <section id="artic" class="section">
             <div class="container">
                 <div class="section-header">
-                    <h2>Art Institute of Chicago Collection</h2>
-                    <p class="subtitle">Discover masterpieces from one of the world's premier art museums</p>
+                    <h2>Featured Artwork</h2>
+                    <p class="subtitle">From the Art Institute of Chicago</p>
+                </div>
+                <div id="artic-artwork-container" class="artic-display">
+                    <div class="artic-loading">Loading artwork...</div>
                 </div>
                 <div class="art-carousel-container">
                     <div class="carousel-header">

@@ -2145,3 +2145,143 @@ p {
         font-size: 1.2rem;
     }
 }
+
+/* ===================
+   ARTIC Artwork Section
+   =================== */
+.artic-display {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--glass-bg);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+}
+
+.artic-loading {
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 2rem;
+    font-size: var(--font-large);
+}
+
+.artic-error {
+    text-align: center;
+    color: #ef4444;
+    padding: 2rem;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    font-size: var(--font-base);
+}
+
+.artic-content {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.artic-image-wrapper {
+    flex: 1;
+    max-width: 500px;
+}
+
+.artic-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+}
+
+.artic-image:hover {
+    transform: scale(1.02);
+}
+
+.artic-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.artic-title {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0;
+    line-height: var(--leading-tight);
+}
+
+.artic-artist {
+    font-size: var(--font-large);
+    color: var(--text-dark);
+    font-weight: 600;
+    margin: 0;
+}
+
+.artic-date {
+    font-size: var(--font-base);
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.artic-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.artic-detail-item {
+    font-size: var(--font-small);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.artic-detail-label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.artic-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    width: fit-content;
+}
+
+.artic-link:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 768px) {
+    .artic-content {
+        flex-direction: column;
+    }
+    
+    .artic-image-wrapper {
+        max-width: 100%;
+    }
+    
+    .artic-display {
+        padding: 1.5rem;
+    }
+}
