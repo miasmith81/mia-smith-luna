@@ -14,6 +14,28 @@ class ArticCarousel {
         this.errorElement = null;
         this.isLoading = false;
         this.cardsToShow = this.calculateCardsToShow();
+        
+        // Manual artworks to always include in carousel
+        this.manualArtworks = [
+            {
+                id: 'manual-1',
+                title: 'Featured Artwork 1',
+                artist_display: 'Art Institute of Chicago Collection',
+                date_display: 'Public Domain',
+                image_id: '3c27b499-af56-f0d5-93b5-a7f2f1ad5813',
+                thumbnail: null,
+                is_manual: true
+            },
+            {
+                id: 'manual-2',
+                title: 'Featured Artwork 2',
+                artist_display: 'Art Institute of Chicago Collection',
+                date_display: 'Public Domain',
+                image_id: '0675f9a9-1a7b-c90a-3bb6-7f7be2afb678',
+                thumbnail: null,
+                is_manual: true
+            }
+        ];
     }
 
     /**
@@ -125,7 +147,7 @@ class ArticCarousel {
     }
 
     /**
-     * Load artworks from the Art Institute API
+     * Load artworks from the Art Institute API and combine with manual artworks
      */
     async loadArtworks() {
         if (this.isLoading) return;
@@ -140,7 +162,7 @@ class ArticCarousel {
                 'query[term][is_public_domain]': 'true',
                 'query[exists]': 'image_id',
                 'fields': 'id,title,artist_display,date_display,image_id,thumbnail',
-                'limit': '24'
+                'limit': '22' // Reduced from 24 to make room for manual artworks
             });
 
             const response = await fetch(`${searchUrl}?${searchParams}`);
@@ -151,17 +173,28 @@ class ArticCarousel {
 
             const data = await response.json();
             
+            // Combine manual artworks with API artworks
             if (data.data && data.data.length > 0) {
-                this.artworks = data.data.filter(artwork => artwork.image_id);
-                console.log(`Loaded ${this.artworks.length} artworks from ARTIC`);
+                const apiArtworks = data.data.filter(artwork => artwork.image_id);
+                // Put manual artworks at the beginning of the carousel
+                this.artworks = [...this.manualArtworks, ...apiArtworks];
+                console.log(`Loaded ${this.artworks.length} artworks (${this.manualArtworks.length} manual + ${apiArtworks.length} from API)`);
             } else {
-                throw new Error('No artworks found');
+                // If API fails, at least show manual artworks
+                this.artworks = [...this.manualArtworks];
+                console.log(`Loaded ${this.artworks.length} manual artworks (API returned no results)`);
             }
 
         } catch (error) {
             console.error('Error loading ARTIC artworks:', error);
-            this.showError();
-            throw error;
+            // Even if API fails, show manual artworks
+            this.artworks = [...this.manualArtworks];
+            console.log(`Loaded ${this.artworks.length} manual artworks (API error fallback)`);
+            // Don't show error if we have manual artworks
+            if (this.artworks.length === 0) {
+                this.showError();
+                throw error;
+            }
         } finally {
             this.isLoading = false;
             this.hideLoading();
@@ -257,11 +290,27 @@ class ArticCarousel {
                 detailViewer.classList.add('show');
             }, 100);
 
-            // Fetch detailed artwork data
-            const artworkData = await this.fetchArtworkDetails(artworkId);
-            
-            // Populate the detail viewer
-            this.populateDetailViewer(artworkData);
+            // Check if this is a manual artwork
+            if (artworkId.toString().startsWith('manual-')) {
+                const manualArtwork = this.artworks.find(art => art.id === artworkId);
+                if (manualArtwork) {
+                    // Try to fetch real artwork details by image ID
+                    const realArtworkId = await this.fetchArtworkByImageId(manualArtwork.image_id);
+                    
+                    if (realArtworkId) {
+                        // Found the real artwork, fetch full details
+                        const artworkData = await this.fetchArtworkDetails(realArtworkId);
+                        this.populateDetailViewer(artworkData);
+                    } else {
+                        // Use manual artwork details
+                        this.populateManualArtworkDetails(manualArtwork);
+                    }
+                }
+            } else {
+                // Fetch detailed artwork data from API
+                const artworkData = await this.fetchArtworkDetails(artworkId);
+                this.populateDetailViewer(artworkData);
+            }
             
             // Set up close button
             this.setupDetailViewerEvents();
@@ -354,6 +403,75 @@ class ArticCarousel {
         const museumLink = document.getElementById('detail-museum-link');
         if (museumLink) {
             museumLink.href = `https://www.artic.edu/artworks/${artwork.id}`;
+        }
+
+        // Hide loading
+        this.hideDetailLoading();
+    }
+
+    /**
+     * Populate detail viewer for manually added artworks
+     */
+    populateManualArtworkDetails(artwork) {
+        // Update image
+        const detailImage = document.getElementById('detail-image');
+        if (detailImage && artwork.image_id) {
+            const largeImageUrl = `${this.iiifBaseUrl}/${artwork.image_id}/full/843,/0/default.jpg`;
+            detailImage.src = largeImageUrl;
+            detailImage.alt = artwork.title || 'Featured Artwork';
+        }
+
+        // Update title
+        const titleElement = document.getElementById('detail-title');
+        if (titleElement) {
+            titleElement.textContent = artwork.title || 'Featured Artwork from Art Institute of Chicago';
+        }
+
+        // Update artist information
+        const artistNameElement = document.getElementById('detail-artist-name');
+        const artistBioElement = document.getElementById('detail-artist-bio');
+        
+        if (artistNameElement) {
+            artistNameElement.textContent = 'Art Institute of Chicago';
+        }
+        
+        if (artistBioElement) {
+            artistBioElement.textContent = 'This artwork is part of the distinguished permanent collection at the Art Institute of Chicago, one of the oldest and largest art museums in the United States. The museum houses approximately 300,000 works of art across diverse media, spanning 5,000 years of human creativity.';
+        }
+
+        // Update artwork info
+        const dateElement = document.getElementById('detail-date');
+        const mediumElement = document.getElementById('detail-medium');
+        const dimensionsElement = document.getElementById('detail-dimensions');
+        const creditElement = document.getElementById('detail-credit');
+
+        if (dateElement) {
+            dateElement.innerHTML = `<strong>Date:</strong> ${artwork.date_display || 'Part of permanent collection'}`;
+        }
+        
+        if (mediumElement) {
+            mediumElement.innerHTML = `<strong>Status:</strong> Public Domain - Free to use`;
+        }
+        
+        if (dimensionsElement) {
+            dimensionsElement.innerHTML = `<strong>Collection:</strong> Art Institute of Chicago`;
+        }
+        
+        if (creditElement) {
+            creditElement.innerHTML = `<strong>Credit:</strong> ${artwork.artist_display || 'Art Institute of Chicago Collection'}`;
+        }
+
+        // Update description/significance
+        const descriptionElement = document.getElementById('detail-description');
+        if (descriptionElement) {
+            descriptionElement.textContent = 'This artwork represents the exceptional quality and diversity of the Art Institute of Chicago\'s world-renowned collection. As a public domain work, it is freely accessible for study, appreciation, and use. The Art Institute has been committed to sharing its collection with the world since its founding in 1879, making art accessible to all. This piece exemplifies the museum\'s dedication to preserving and presenting works that have shaped art history and continue to inspire audiences today.';
+        }
+
+        // Update museum link - use generic collection link for manual artworks
+        const museumLink = document.getElementById('detail-museum-link');
+        if (museumLink) {
+            museumLink.href = 'https://www.artic.edu/collection';
+            museumLink.innerHTML = 'Explore Full Collection at AIC <span>→</span>';
         }
 
         // Hide loading
@@ -586,5 +704,36 @@ class ArticCarousel {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    /**
+     * Try to fetch real artwork ID from image ID
+     */
+    async fetchArtworkByImageId(imageId) {
+        try {
+            const searchUrl = `${this.apiBaseUrl}/artworks/search`;
+            const searchParams = new URLSearchParams({
+                'query[term][image_id]': imageId,
+                'fields': 'id,title,artist_display,date_display,image_id',
+                'limit': '1'
+            });
+
+            const response = await fetch(`${searchUrl}?${searchParams}`);
+            
+            if (!response.ok) {
+                return null;
+            }
+
+            const data = await response.json();
+            
+            if (data.data && data.data.length > 0) {
+                return data.data[0].id;
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Error fetching artwork by image ID:', error);
+            return null;
+        }
     }
 }

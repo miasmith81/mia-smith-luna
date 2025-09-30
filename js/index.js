@@ -404,6 +404,123 @@ class GitHubHandler {
 }
 
 /**
+ * Art Institute of Chicago API Service
+ */
+class ArticService {
+    static ARTWORK_ID = 27992;
+    static API_BASE = 'https://api.artic.edu/api/v1/artworks';
+    static IMAGE_BASE = 'https://www.artic.edu/iiif/2';
+
+    static async fetchArtwork() {
+        try {
+            console.log('Fetching artwork from ARTIC API...');
+            const response = await fetch(`${this.API_BASE}/${this.ARTWORK_ID}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Artwork data received:', data);
+            return data.data;
+        } catch (error) {
+            console.error('Error fetching artwork:', error);
+            throw error;
+        }
+    }
+
+    static getImageUrl(imageId, width = 843) {
+        if (!imageId) return '';
+        return `${this.IMAGE_BASE}/${imageId}/full/${width},/0/default.jpg`;
+    }
+
+    static displayArtwork(artwork) {
+        console.log('Displaying artwork:', artwork);
+        const container = document.getElementById('artic-artwork-container');
+        
+        if (!container) {
+            console.error('ARTIC container not found!');
+            return;
+        }
+
+        const title = artwork.title || 'Untitled';
+        const artist = artwork.artist_display || 'Unknown Artist';
+        const dateDisplay = artwork.date_display || 'Date unknown';
+        const medium = artwork.medium_display || 'Medium not specified';
+        const dimensions = artwork.dimensions || 'Dimensions not available';
+        const creditLine = artwork.credit_line || '';
+        const imageId = artwork.image_id;
+
+        let htmlContent = '<div class="artic-content">';
+
+        if (imageId) {
+            const imageUrl = this.getImageUrl(imageId);
+            htmlContent += `
+                <div class="artic-image-wrapper">
+                    <img src="${imageUrl}" 
+                         alt="${title}" 
+                         class="artic-image"
+                         loading="lazy"
+                         onerror="console.error('Image failed to load')">
+                </div>
+            `;
+        }
+
+        htmlContent += `
+            <div class="artic-info">
+                <h3 class="artic-title">${title}</h3>
+                <p class="artic-artist">${artist}</p>
+                <p class="artic-date">${dateDisplay}</p>
+                
+                <div class="artic-details">
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Medium:</span> ${medium}
+                    </div>
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Dimensions:</span> ${dimensions}
+                    </div>
+                    ${creditLine ? `
+                    <div class="artic-detail-item">
+                        <span class="artic-detail-label">Credit:</span> ${creditLine}
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <a href="https://www.artic.edu/" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="artic-link">
+                    Visit Art Institute of Chicago
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+        `;
+
+        htmlContent += '</div>';
+        container.innerHTML = htmlContent;
+        console.log('Artwork displayed successfully');
+    }
+
+    static showError(message) {
+        console.error('ARTIC Error:', message);
+        const container = document.getElementById('artic-artwork-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="artic-error">
+                    <p><strong>Error loading artwork:</strong></p>
+                    <p>${message}</p>
+                    <p>Please try refreshing the page.</p>
+                </div>
+            `;
+        }
+    }
+}
+
+/**
  * Main portfolio application
  */
 class PortfolioApp {
@@ -420,7 +537,24 @@ class PortfolioApp {
         // Initialize GitHub repositories
         GitHubHandler.init();
         
+        // Initialize ARTIC artwork
+        PortfolioApp.initializeArticArtwork();
+        
         console.log('Portfolio application initialized successfully');
+    }
+
+    /**
+     * Initialize Art Institute of Chicago artwork display
+     */
+    static async initializeArticArtwork() {
+        console.log('Initializing ARTIC artwork...');
+        try {
+            const artwork = await ArticService.fetchArtwork();
+            ArticService.displayArtwork(artwork);
+        } catch (error) {
+            console.error('ARTIC initialization failed:', error);
+            ArticService.showError('Failed to load artwork from Art Institute of Chicago API. Please check your internet connection.');
+        }
     }
 }
 
