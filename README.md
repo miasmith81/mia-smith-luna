@@ -83,6 +83,21 @@ In the spirit of digital transparency, these AI tools were used to enhance devel
 - Claude AI (Documentation assistance)
 - Google Bard (Research assistance)
 
+## Featured Projects
+
+### 🌙 Luna Open API Project
+An interactive web application demonstrating API integration, asynchronous JavaScript, and modern web development practices.
+
+**Project Highlights:**
+- RESTful API integration
+- Asynchronous data fetching
+- Dynamic DOM manipulation
+- Responsive design implementation
+
+[![View Repository. Button with blue background and white text reading View Repository, featuring the GitHub logo. The badge has a modern, flat design and communicates a call to action to visit the Luna Open API Project repository. The overall tone is inviting and professional.](https://img.shields.io/badge/View-Repository-2563eb?style=for-the-badge&logo=github)](https://github.com/miasmith81/Luna-Open-API-Project)
+
+---
+
 ## Project Structure
 
 ```text
