@@ -86,9 +86,11 @@ In the spirit of digital transparency, these AI tools were used to enhance devel
 ## Featured Projects
 
 ### 🌙 Luna Open API Project
+
 An interactive web application demonstrating API integration, asynchronous JavaScript, and modern web development practices.
 
 **Project Highlights:**
+
 - RESTful API integration
 - Asynchronous data fetching
 - Dynamic DOM manipulation
@@ -109,6 +111,7 @@ mia-smith-luna/
 ├── index.html       # Main HTML file
 └── README.md        # Documentation
 ```
+
 ```
 
 ## Setup and Installation
@@ -119,13 +122,13 @@ mia-smith-luna/
     git clone https://github.com/miasmith81/mia-smith-luna.git
     ```
 
-2. Navigate to the project directory:
+1. Navigate to the project directory:
 
-    ```bash
-    cd mia-smith-luna
-    ```
+   ```bash
+   cd mia-smith-luna
+   ```
 
-3. Open `index.html` in your browser or use a local server.
+1. Open `index.html` in your browser or use a local server.
 
 ### Design Resources
 
@@ -149,13 +152,17 @@ mia-smith-luna/
 ## Setup and Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/miasmith81/mia-smith-luna.git
    ```
+
 2. Navigate to the project directory:
+
    ```bash
    cd mia-smith-luna
    ```
+
 3. Open `index.html` in your browser or use a local server.
 
 ## Resources & Credits
@@ -210,4 +217,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 Created with ❤️ by Mia Smith | Last Updated: August 2025
-
