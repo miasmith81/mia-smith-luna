@@ -873,10 +873,21 @@ p {
     background: #a8a8a8;
 }
 
-/* Firefox scrollbar */
-.skill-category {
-    scrollbar-width: thin;
-    scrollbar-color: #c1c1c1 #f1f1f1;
+/* Custom scrollbar for Webkit browsers */
+.skill-category::-webkit-scrollbar {
+    width: 8px;
+}
+.skill-category::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.skill-category::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    border: 2px solid #f1f1f1;
+}
+.skill-category::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
 }
 
 /* Remove all list styling in skills section */
@@ -1639,8 +1650,8 @@ p {
    =================== */
 #artic {
     background: var(--card-bg);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .art-carousel-container {
@@ -1684,8 +1695,8 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     font-weight: bold;
     line-height: 1;
 }
@@ -1708,8 +1719,8 @@ p {
     overflow: hidden;
     border-radius: var(--border-radius);
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     box-shadow: var(--shadow);
     padding: 1.5rem;
 }
@@ -1766,6 +1777,7 @@ p {
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: 2.6rem;
@@ -1779,6 +1791,7 @@ p {
     font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 1;
+    line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -1818,8 +1831,8 @@ p {
     font-size: var(--font-base);
     background: var(--glass-bg);
     border-radius: var(--border-radius);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 .carousel-error {
@@ -1840,8 +1853,8 @@ p {
     transform: translateY(20px);
     transition: all 0.5s ease;
     background: var(--glass-bg);
-    backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+    backdrop-filter: blur(15px);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1929,14 +1942,15 @@ p {
     background: rgba(255, 255, 255, 0.9);
     padding: 1rem 2rem;
     border-radius: 25px;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
     display: none;
 }
 
 .artwork-detail-info {
     background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);

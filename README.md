@@ -103,15 +103,12 @@ An interactive web application demonstrating API integration, asynchronous JavaS
 ## Project Structure
 
 ```text
-```text
 mia-smith-luna/
 ├── assets/           # Images and media files
 ├── css/             # Stylesheets
 │   └── styles.css   # Main stylesheet
 ├── index.html       # Main HTML file
 └── README.md        # Documentation
-```
-
 ```
 
 ## Setup and Installation
@@ -129,41 +126,6 @@ mia-smith-luna/
    ```
 
 1. Open `index.html` in your browser or use a local server.
-
-### Design Resources
-
-- [Google Fonts](https://fonts.google.com/) - Merriweather font
-- [Hero Icons](https://heroicons.com/) - UI icons
-- [Unsplash](https://unsplash.com/) - Stock images
-
-### Additional Resources
-
-- [MDN Web Docs](https://developer.mozilla.org/)
-- [CSS-Tricks](https://css-tricks.com/)
-- [Code The Dream](https://codethedream.org/)
-- [The Last Mile](https://thelastmile.org/)
-
-### Code References
-
-- [CSS Grid Guide](https://css-tricks.com/snippets/css/complete-guide-grid/)
-- [Flexbox Guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-- [Modern CSS Reset](https://piccalil.li/blog/a-modern-css-reset/)
-
-## Setup and Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/miasmith81/mia-smith-luna.git
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd mia-smith-luna
-   ```
-
-3. Open `index.html` in your browser or use a local server.
 
 ## Resources & Credits
 
@@ -216,4 +178,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Created with ❤️ by Mia Smith | Last Updated: August 2025 
+Created with ❤️ by Mia Smith | Last Updated: August 2025
