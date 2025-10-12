@@ -2271,6 +2271,17 @@ p {
     box-shadow: var(--shadow);
 }
 
+.artic-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.artic-actions .artic-link {
+    margin-top: 0;
+}
+
 /* Mobile Responsive */
 @media screen and (max-width: 768px) {
     .artic-content {
@@ -2283,5 +2294,16 @@ p {
     
     .artic-display {
         padding: 1.5rem;
+    }
+    
+    .artic-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .artic-actions .artic-link {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
     }
 }
