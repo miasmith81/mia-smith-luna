@@ -29,10 +29,11 @@ const CONFIG = {
  */
 class Utils {
     /**
-     * Sanitize HTML content to prevent XSS
+     * Sanitize HTML content to prevent XSS attacks by converting user input into safe text
      * @param {string} html - HTML content to sanitize
      * @returns {string} - Sanitized HTML
      */
+    // Creates a temporary div, sets the textContent (which escapes HTML), then returns the safe HTML 
     static sanitizeHTML(html) {
         const div = document.createElement('div');
         div.textContent = html;
@@ -40,7 +41,7 @@ class Utils {
     }
 
     /**
-     * Show error message in console and optionally to user
+     * Logs errors to the console. Has a TODO for showing errors to users.
      * @param {string} message - Error message
      */
     static showError(message) {
@@ -49,7 +50,7 @@ class Utils {
     }
 
     /**
-     * Format date to a readable string
+     * Format date to a readable string 
      * @param {string} dateString - ISO date string
      * @returns {string} Formatted date
      */
@@ -63,7 +64,7 @@ class Utils {
     }
 
     /**
-     * Format repository name for display
+     * Format repository name for display (e.g., "my-repo-name" to "My Repo Name")
      * @param {string} name - Repository name
      * @returns {string} Formatted name
      */
@@ -76,7 +77,8 @@ class Utils {
 }
 
 /**
- * Message form handler
+ * Message form handler. Manages form submission, validation, and message display.
+ * Sets up the message form when the page loads. Finds the form, message section, and list elements. Hides the messages section initially. Attaches a submit event listener.
  */
 class MessageHandler {
     static init() {
@@ -92,37 +94,37 @@ class MessageHandler {
             this.form.addEventListener('submit', this.handleSubmit.bind(this));
         }
     }
-
-    static handleSubmit(event) {
-        event.preventDefault();
-        
+    // Handles form submission: validates input, creates message list item, shows thank you message, and resets the form
+    static handleSubmit(event) { 
+        event.preventDefault(); // Prevents default form submission
+        // Gets and trims the name, email, and message values
         const userName = event.target.usersName.value.trim();
         const userEmail = event.target.usersEmail.value.trim();
         const userMessage = event.target.usersMessage.value.trim();
         
-        console.log(userName, userEmail, userMessage);
+        console.log(userName, userEmail, userMessage); // Logs the values to console
         
-        if (!this.validateForm(userName, userEmail)) return;
+        if (!this.validateForm(userName, userEmail)) return; // Validates the form inputs
         
-        this.clearThankYouMessages();
+        this.clearThankYouMessages(); // Clears any existing thank you messages
         
-        if (userMessage) {
+        if (userMessage) { // If a message is provided, create a new message list item
             this.createMessageListItem(userName, userEmail, userMessage);
             if (this.section) {
                 this.section.style.display = 'block';
             }
-            this.showThankYouMessage(
+            this.showThankYouMessage( // Shows a thank you message including the user's message
                 `Thank you ${userName} for your message and visiting my portfolio page. I will get back to you as soon as possible and have a wonderful day.`
             );
         } else {
-            this.showThankYouMessage(
+            this.showThankYouMessage( // If no message, just thank the user for visiting
                 `Thank you ${userName} for visiting my portfolio page and have a wonderful day.`
             );
         }
         
-        event.target.reset();
+        event.target.reset(); // Resets the form fields
     }
-
+    // Validates the form inputs: checks for empty name/email and valid email format
     static validateForm(userName, userEmail) {
         if (!userName) {
             alert('Please enter your name');
@@ -142,30 +144,30 @@ class MessageHandler {
         
         return true;
     }
-
+    // Creates a new message list item with the user's name, email, and message
     static createMessageListItem(name, email, message) {
         if (!this.list) return;
         
-        const li = document.createElement('li');
+        const li = document.createElement('li'); // Create a new list item
         
-        const messageContent = document.createElement('div');
-        messageContent.className = 'message-content';
+        const messageContent = document.createElement('div'); // Container for message content
+        messageContent.className = 'message-content'; // Add a class for styling
         
-        const emailLink = document.createElement('a');
+        const emailLink = document.createElement('a'); // Create a clickable mailto link for the user's email
         emailLink.href = `mailto:${email}`;
         emailLink.textContent = name;
         
-        const messageText = document.createElement('span');
+        const messageText = document.createElement('span'); // Span to hold the message text
         messageText.className = 'message-text';
         messageText.textContent = message;
         
-        const editButton = document.createElement('button');
+        const editButton = document.createElement('button'); // Button to edit the message
         editButton.textContent = 'edit';
         editButton.type = 'button';
         editButton.className = 'edit-btn';
         editButton.addEventListener('click', () => this.handleEdit(messageText));
         
-        const removeButton = document.createElement('button');
+        const removeButton = document.createElement('button'); // Button to remove the message
         removeButton.textContent = 'remove';
         removeButton.type = 'button';
         removeButton.className = 'remove-btn';
@@ -173,48 +175,48 @@ class MessageHandler {
             li.remove();
             this.checkListVisibility();
         });
-        
-        messageContent.append(emailLink, messageText, editButton, removeButton);
-        li.appendChild(messageContent);
-        this.list.appendChild(li);
+        // Assembles everything and adds it to the list
+        messageContent.append(emailLink, messageText, editButton, removeButton); // Append elements to the message content container
+        li.appendChild(messageContent); // Append the message content to the list item
+        this.list.appendChild(li); // Append the list item to the message list
     }
-
+    // Shows a prompt to edit a message, updates the text if a new message is provided.
     static handleEdit(messageText) {
-        const currentMessage = messageText.textContent;
-        const newMessage = prompt('Edit your message:', currentMessage);
-        if (newMessage !== null && newMessage.trim() !== '') {
-            messageText.textContent = newMessage.trim();
+        const currentMessage = messageText.textContent; // Get the current message text
+        const newMessage = prompt('Edit your message:', currentMessage); // Prompt user to edit the message
+        if (newMessage !== null && newMessage.trim() !== '') { // If a new message is provided, update the text content
+            messageText.textContent = newMessage.trim(); // Trim whitespace and update the message text
         }
     }
-
+    // Displays a thank you message below the form, which disappears after a set duration
     static showThankYouMessage(messageText) {
-        const thankYouDiv = document.createElement('div');
-        thankYouDiv.className = 'thank-you-message';
-        thankYouDiv.setAttribute('role', 'alert');
-        thankYouDiv.setAttribute('aria-live', 'polite');
+        const thankYouDiv = document.createElement('div'); // Create a new div for the thank you message
+        thankYouDiv.className = 'thank-you-message'; // Add a class for styling
+        thankYouDiv.setAttribute('role', 'alert'); // Accessibility: announce the message to screen readers immediately
+        thankYouDiv.setAttribute('aria-live', 'polite'); // Accessibility: announce the message politely    
         
-        const paragraph = document.createElement('p');
-        paragraph.textContent = messageText;
-        thankYouDiv.appendChild(paragraph);
+        const paragraph = document.createElement('p'); // Create a paragraph to hold the message text 
+        paragraph.textContent = messageText; // Set the message text 
+        thankYouDiv.appendChild(paragraph); // Append the paragraph to the thank you div 
         
-        if (this.form && this.form.parentNode) {
-            this.form.parentNode.insertBefore(thankYouDiv, this.form.nextSibling);
+        if (this.form && this.form.parentNode) { // Insert the thank you message after the form 
+            this.form.parentNode.insertBefore(thankYouDiv, this.form.nextSibling); // Insert after the form 
         }
         
-        setTimeout(() => {
-            if (thankYouDiv.parentNode) {
-                thankYouDiv.remove();
+        setTimeout(() => { // Remove the thank you message after the specified duration in milliseconds (5 seconds)
+            if (thankYouDiv.parentNode) { // Check if the thank you message is still in the DOM before removing it
+                thankYouDiv.remove(); // Remove the thank you message
             }
-        }, CONFIG.timing.thankYouMessageDuration);
+        }, CONFIG.timing.thankYouMessageDuration); // Duration from config 
     }
 
-    static clearThankYouMessages() {
-        document.querySelectorAll('.thank-you-message').forEach(msg => msg.remove());
+    static clearThankYouMessages() { // Clears any existing thank you messages to avoid clutter 
+        document.querySelectorAll('.thank-you-message').forEach(msg => msg.remove()); // Remove all existing thank you messages
     }
 
-    static checkListVisibility() {
-        if (this.section && this.list) {
-            this.section.style.display = this.list.children.length > 0 ? 'block' : 'none';
+    static checkListVisibility() { // Checks if the message list is empty and hides the section if so 
+        if (this.section && this.list) { // Ensure both section and list exist
+            this.section.style.display = this.list.children.length > 0 ? 'block' : 'none'; // Show or hide the section based on list content
         }
     }
 }

@@ -370,18 +370,19 @@ class GitHubHandler {
      */
     static displayRepositories(repositories, projectsList) {
         // Clear existing content
-        projectsList.innerHTML = '';
+        projectsList.innerHTML = ''; 
 
-        for (let i = 0; i < repositories.length; i++) {
-            const repo = repositories[i];
-            const isFeatured = CONFIG.github.featuredRepos.includes(repo.name);
+        for (let i = 0; i < repositories.length; i++) { // Limit to first 6 repositories
+            const repo = repositories[i]; 
+            const isFeatured = CONFIG.github.featuredRepos.includes(repo.name); // Check if repo is featured
             
-            const project = document.createElement('li');
-            project.className = `project-item${isFeatured ? ' featured' : ''}`;
+            const project = document.createElement('li'); // Create list item for each project
+            project.className = `project-item${isFeatured ? ' featured' : ''}`; // Add 'featured' class if applicable   
             
-            const formattedName = Utils.formatRepoName(repo.name);
-            const updatedDate = Utils.formatDate(repo.updated_at);
+            const formattedName = Utils.formatRepoName(repo.name); // Format repo name for display
+            const updatedDate = Utils.formatDate(repo.updated_at); // Format last updated date
             
+            // Construct project HTML content with conditional elements  
             project.innerHTML = `
                 <div class="project-content">
                     ${isFeatured ? '<span class="featured-badge">Featured Project</span>' : ''}
