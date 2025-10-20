@@ -541,6 +541,51 @@ class ArticService {
 }
 
 /**
+ * Mobile Navigation Handler
+ */
+class MobileNavHandler {
+    static init() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        const navLinksItems = document.querySelectorAll('.nav-links a');
+        
+        if (!menuToggle || !navLinks) {
+            console.log('Mobile navigation elements not found');
+            return;
+        }
+        
+        // Toggle mobile menu
+        menuToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a link and add smooth scroll
+        navLinksItems.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Close mobile menu if open
+                menuToggle.setAttribute('aria-expanded', 'false');
+                navLinks.classList.remove('active');
+                
+                // Smooth scroll to section
+                const targetId = this.getAttribute('href');
+                if (targetId && targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    }
+}
+
+/**
  * Main portfolio application
  */
 class PortfolioApp {
@@ -556,6 +601,9 @@ class PortfolioApp {
 
         // Initialize GitHub repositories
         GitHubHandler.init();
+        
+        // Initialize mobile navigation
+        MobileNavHandler.init();
         
         // Initialize ARTIC artwork
         PortfolioApp.initializeArticArtwork();

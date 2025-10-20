@@ -217,30 +217,7 @@ body {
     color: var(--text-dark);
 }
 
-/* Media Queries */
-@media (max-width: 768px) {
-    .message-form {
-        padding: 1rem 0;
-    }
-
-    .form-group input,
-    .form-group textarea,
-    .submit-btn,
-    .remove-btn,
-    .edit-btn {
-        font-size: 16px; /* Prevent iOS zoom */
-    }
-
-    .message-content {
-        padding: 1rem;
-    }
-
-    .remove-btn,
-    .edit-btn {
-        padding: 0.75rem 1rem;
-        margin-top: 0.5rem;
-    }
-}
+/* Media Queries - Consolidated at bottom of file */
 
 /* Thank You Message Styles */
 .thank-you-message {
@@ -1111,27 +1088,6 @@ p {
     transform: translateY(-1px);
 }
 
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .projects-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 1rem 0;
-    }
-    
-    .project-item {
-        padding: 1.5rem;
-    }
-    
-    .project-links {
-        flex-direction: column;
-    }
-    
-    .project-link {
-        text-align: center;
-    }
-}
-
 /* ===================
    Message Form Section
    =================== */
@@ -1422,228 +1378,6 @@ p {
     list-style: none;
     display: flex;
     align-items: center;
-}
-
-/* ===================
-   Message Form Styles
-   =================== */
-.message-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-weight: 500;
-    color: var(--text-dark);
-}
-
-.form-group input,
-.form-group textarea {
-    padding: 0.75rem;
-    border: 1px solid rgba(0,0,0,0.1);
-    border-radius: 8px;
-    font-size: 1rem;
-    background: rgba(255,255,255,0.9);
-    transition: all 0.3s ease;
-}
-
-.form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
-}
-
-.submit-btn {
-    padding: 0.75rem 1.5rem;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.submit-btn:hover {
-    background: var(--primary-dark);
-    transform: translateY(-1px);
-}
-
-/* Message List Styles */
-#message-list {
-    list-style: none;
-    padding: 0;
-    margin: 2rem 0;
-}
-
-#message-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255,255,255,0.9);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-}
-
-.message-text {
-    flex: 1;
-    line-height: 1.5;
-}
-
-.remove-btn {
-    padding: 0.5rem 1rem;
-    background: #ef4444;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.remove-btn:hover {
-    background: #dc2626;
-}
-
-/* Media Queries */
-@media (max-width: 768px) {
-    .message-form {
-        padding: 1rem;
-    }
-    
-    .form-group input,
-    .form-group textarea {
-        padding: 1rem;
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-    
-    .submit-btn,
-    .remove-btn {
-        padding: 1rem 1.5rem;
-        font-size: 16px;
-    }
-}
-
-/* Small devices (576px and up) */
-@media screen and (min-width: 576px) {
-    .container {
-        padding: 0 2rem;
-    }
-
-    .photo-section {
-        padding: 3rem;
-    }
-}
-
-/* Tablet (768px and up) */
-@media screen and (min-width: 768px) {
-    .nav-links {
-        flex-direction: row;
-        gap: 2rem;
-    }
-    
-    .connect-links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-    }
-    
-    .experience-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .photo-section {
-        flex-direction: row;
-        text-align: left;
-        padding: 4rem;
-        gap: 4rem;
-    }
-
-    .profile-img {
-        width: 250px;
-        height: 250px;
-    }
-
-    .about-content {
-        text-align: left;
-    }
-    
-    h2 {
-        font-size: clamp(1.8rem, 4vw, 2.5rem);
-    }
-    
-    h3 {
-        font-size: clamp(1.4rem, 3vw, 1.8rem);
-    }
-
-    .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Desktop (1024px and up) */
-@media screen and (min-width: 1024px) {
-    .container {
-        padding: 0 3rem;
-    }
-    
-    .nav-container {
-        padding: 0 3rem;
-    }
-    
-    .experience-grid {
-        gap: 3rem;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .skills-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .photo-section {
-        padding: 5rem;
-    }
-
-    .profile-img {
-        width: 300px;
-        height: 300px;
-    }
-}
-
-/* Large Desktop (1440px and up) */
-@media screen and (min-width: 1440px) {
-    .container {
-        max-width: 1400px;
-        padding: 0 4rem;
-    }
-    
-    .photo-section {
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-    
-    .skills-grid,
-    .experience-grid {
-        gap: 4rem;
-    }
 }
 /* ===================
    ARTIC Art Carousel Styles
@@ -2076,90 +1810,6 @@ p {
     box-shadow: var(--shadow);
 }
 
-/* Mobile Responsiveness for ARTIC Section */
-@media (max-width: 1024px) {
-    .artwork-detail-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .artwork-detail-container {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .carousel-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 1.5rem;
-    }
-    
-    .artwork-card {
-        min-width: 280px;
-        width: 280px;
-    }
-    
-    .art-carousel-container {
-        padding: 1rem 0;
-    }
-    
-    .art-carousel {
-        padding: 1rem;
-    }
-    
-    .artwork-detail-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-    
-    .artwork-detail-info {
-        padding: 1.5rem;
-    }
-    
-    .detail-title {
-        font-size: var(--font-large);
-    }
-    
-    .detail-artist-section,
-    .detail-artwork-info,
-    .detail-significance {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .artwork-card {
-        min-width: 260px;
-        width: 260px;
-    }
-    
-    .artwork-detail-container {
-        padding: 1rem;
-    }
-    
-    .artwork-detail-content {
-        gap: 1.5rem;
-    }
-    
-    .detail-title {
-        font-size: 1.4rem;
-    }
-    
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-    }
-    
-    .close-detail-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 1.2rem;
-    }
-}
-
 /* ===================
    ARTIC Artwork Section
    =================== */
@@ -2296,8 +1946,427 @@ p {
     margin-top: 0;
 }
 
-/* Mobile Responsive */
-@media screen and (max-width: 768px) {
+/* ===================
+   Media Queries - Mobile First Approach
+   =================== */
+
+/* Mobile Navigation - Only active below 768px */
+@media (max-width: 767px) {
+    .menu-toggle {
+        display: block;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 400px;
+        background: rgba(255, 255, 255, 0.95);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 1rem 0;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+    
+    .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .nav-links li {
+        width: 100%;
+    }
+    
+    .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1.5rem;
+        text-align: center;
+        border-radius: 0;
+    }
+    
+    .nav-links a:hover {
+        background: rgba(37, 99, 235, 0.1);
+    }
+}
+
+/* Small devices - 576px and up */
+@media screen and (min-width: 576px) {
+    .container {
+        padding: 0 2rem;
+    }
+    
+    .hero {
+        padding: clamp(4rem, 12vh, 6rem) 0;
+    }
+    
+    .photo-section {
+        padding: 3rem;
+    }
+    
+    .profile-img {
+        width: 180px;
+        height: 180px;
+    }
+    
+    /* Form adjustments */
+    .form-group input,
+    .form-group textarea {
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+    
+    .submit-btn,
+    .remove-btn,
+    .edit-btn {
+        min-height: 48px;
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+    
+    /* Skills - maintain single column */
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Projects - maintain single column */
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Experience - maintain single column */
+    .experience-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Connect links - stack vertically */
+    .connect-links {
+        flex-direction: column;
+    }
+    
+    /* ARTIC - smaller artwork cards */
+    .artwork-card {
+        min-width: 260px;
+        width: 260px;
+    }
+}
+
+/* Medium devices - 768px and up */
+@media screen and (min-width: 768px) {
+    /* Navigation - horizontal - Ensure desktop navigation stays visible */
+    .menu-toggle {
+        display: none !important;
+    }
+    
+    .nav-links {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: static !important;
+        transform: none !important;
+        width: auto !important;
+        background: transparent !important;
+        padding: 0 !important;
+        flex-direction: row !important;
+        gap: 0.5rem !important;
+        box-shadow: none !important;
+        border: none !important;
+        margin: 0;
+    }
+    
+    .nav-links li {
+        width: auto;
+    }
+    
+    .nav-links a {
+        width: auto;
+        text-align: left;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    /* Photo section - row layout */
+    .photo-section {
+        flex-direction: row;
+        text-align: left;
+        padding: 4rem;
+        gap: 4rem;
+    }
+    
+    .profile-img {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .about-content {
+        text-align: left;
+    }
+    
+    /* Typography adjustments */
+    h2 {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+    
+    h3 {
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+    }
+    
+    /* Skills - 2 columns */
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Projects - 2 columns */
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Experience - 2 columns */
+    .experience-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Connect links - horizontal row */
+    .connect-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+    }
+    
+    /* Form - maintain max-width */
+    .message-form {
+        max-width: 600px;
+    }
+    
+    /* ARTIC artwork - 280px cards */
+    .artwork-card {
+        min-width: 280px;
+        width: 280px;
+    }
+    
+    .art-carousel {
+        padding: 1.5rem;
+    }
+    
+    .art-carousel-container {
+        padding: 2rem 0;
+    }
+}
+
+/* Large devices - 1024px and up */
+@media screen and (min-width: 1024px) {
+    .container {
+        padding: 0 3rem;
+    }
+    
+    .nav-container {
+        padding: 0 3rem;
+    }
+    
+    /* Photo section */
+    .photo-section {
+        padding: 5rem;
+    }
+    
+    .profile-img {
+        width: 300px;
+        height: 300px;
+    }
+    
+    /* Skills - 3 columns */
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
+    
+    /* Projects - 3 columns */
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
+    
+    /* Experience - 3 columns */
+    .experience-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3rem;
+    }
+    
+    /* Section spacing */
+    section > .container {
+        gap: 3rem;
+    }
+    
+    /* ARTIC - standard 320px cards */
+    .artwork-card {
+        min-width: 320px;
+        width: 320px;
+    }
+    
+    .artwork-detail-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+}
+
+/* Extra large devices - 1440px and up */
+@media screen and (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+        padding: 0 4rem;
+    }
+    
+    .nav-container {
+        max-width: 1400px;
+        padding: 0 4rem;
+    }
+    
+    .photo-section {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    /* Section spacing */
+    section > .container {
+        gap: 4rem;
+    }
+    
+    .skills-grid,
+    .experience-grid,
+    .projects-grid {
+        gap: 4rem;
+    }
+}
+
+/* Mobile-specific refinements */
+@media screen and (max-width: 575px) {
+    /* Hero section - reduced padding */
+    .hero {
+        padding: 2rem 0;
+    }
+    
+    /* Photo section - stacked */
+    .photo-section {
+        flex-direction: column;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .profile-img {
+        width: 180px;
+        height: 180px;
+    }
+    
+    /* Message form - full width */
+    .message-form {
+        padding: 1rem 0;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        padding: 1rem;
+        font-size: 16px; /* Prevent iOS zoom */
+    }
+    
+    .message-content {
+        padding: 1rem;
+    }
+    
+    .remove-btn,
+    .edit-btn {
+        padding: 0.75rem 1rem;
+        margin-top: 0.5rem;
+        font-size: 16px;
+    }
+    
+    /* Projects - single column */
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    
+    .project-item {
+        padding: 1.5rem;
+    }
+    
+    .project-links {
+        flex-direction: column;
+    }
+    
+    .project-link {
+        text-align: center;
+    }
+    
+    /* ARTIC section - mobile adjustments */
+    .carousel-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .artwork-card {
+        min-width: 260px;
+        width: 260px;
+    }
+    
+    .art-carousel-container {
+        padding: 1rem 0;
+    }
+    
+    .art-carousel {
+        padding: 1rem;
+    }
+    
+    .artwork-detail-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .artwork-detail-container {
+        padding: 1rem;
+    }
+    
+    .artwork-detail-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .artwork-detail-info {
+        padding: 1.5rem;
+    }
+    
+    .detail-title {
+        font-size: 1.4rem;
+    }
+    
+    .detail-artist-section,
+    .detail-artwork-info,
+    .detail-significance {
+        padding: 1rem;
+    }
+    
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    
+    .close-detail-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    
+    /* ARTIC display - mobile */
     .artic-content {
         flex-direction: column;
     }
@@ -2321,3 +2390,5 @@ p {
         justify-content: center;
     }
 }
+
+/* Mobile Responsiveness for ARTIC Section */
